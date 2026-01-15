@@ -1,0 +1,56 @@
+<div class="login-container">
+    <div class="login-card card" style="max-width: 500px;">
+        <div class="text-center mb-4">
+            <h1 class="brand-title">SupplyChain<span class="highlight">X</span></h1>
+            <p class="text-muted">Créer un nouveau compte</p>
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+            <div class="flex" style="gap: 1rem;">
+                <div class="form-group w-full">
+                    <label for="firstName" class="form-label">Prénom</label>
+                    <input type="text" id="firstName" class="form-control" formControlName="firstName"
+                        placeholder="Jean">
+                </div>
+                <div class="form-group w-full">
+                    <label for="lastName" class="form-label">Nom</label>
+                    <input type="text" id="lastName" class="form-control" formControlName="lastName"
+                        placeholder="Dupont">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="email" class="form-label">Email</label>
+                <input type="email" id="email" class="form-control" formControlName="email"
+                    placeholder="jean.dupont@exemple.com">
+            </div>
+
+            <div class="form-group">
+                <label for="password" class="form-label">Mot de passe</label>
+                <input type="password" id="password" class="form-control" formControlName="password"
+                    placeholder="••••••••">
+            </div>
+
+            <div class="form-group">
+                <label for="role" class="form-label">Rôle</label>
+                <select id="role" class="form-control" formControlName="role">
+                    <option *ngFor="let r of roles" [value]="r">{{ r }}</option>
+                </select>
+            </div>
+
+            <div *ngIf="errorMessage" class="alert-error mb-4">
+                {{ errorMessage }}
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block" [disabled]="registerForm.invalid || isLoading">
+                <span *ngIf="isLoading">Chargement...</span>
+                <span *ngIf="!isLoading">S'inscrire</span>
+            </button>
+
+            <div class="mt-4 text-center">
+                <span class="text-muted text-sm">Déjà un compte ? </span>
+                <a routerLink="/login" class="text-primary text-sm font-bold">Se connecter</a>
+            </div>
+        </form>
+    </div>
+</div>
