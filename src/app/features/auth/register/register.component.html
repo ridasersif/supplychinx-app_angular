@@ -2,7 +2,7 @@
     <div class="login-card card" style="max-width: 500px;">
         <div class="text-center mb-4">
             <h1 class="brand-title">SupplyChain<span class="highlight">X</span></h1>
-            <p class="text-muted">Créer un nouveau compte</p>
+            <p class="text-muted">Créer un nouvel utilisateur</p>
         </div>
 
         <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
@@ -44,13 +44,8 @@
 
             <button type="submit" class="btn btn-primary btn-block" [disabled]="registerForm.invalid || isLoading">
                 <span *ngIf="isLoading">Chargement...</span>
-                <span *ngIf="!isLoading">S'inscrire</span>
+                <span *ngIf="!isLoading">Créer l'utilisateur</span>
             </button>
-
-            <div class="mt-4 text-center">
-                <span class="text-muted text-sm">Déjà un compte ? </span>
-                <a routerLink="/login" class="text-primary text-sm font-bold">Se connecter</a>
-            </div>
         </form>
     </div>
 </div>

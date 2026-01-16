@@ -1,30 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, map, of, catchError } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of } from 'rxjs';
 import { Router } from '@angular/router';
-import { AuthRequest, RegisterRequest, AuthResponse, User, Role } from './auth.models';
+import { AuthRequest, RegisterRequest, AuthResponse, User, Role } from '../../auth/models/auth-models';
+import { TokenService } from './token.service';
+import { environment } from '../../../environments/environment';
 import { jwtDecode } from 'jwt-decode';
-
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService {
-    private readonly API_URL = 'http://localhost:8080/auth';
-    private readonly ACCESS_TOKEN_KEY = 'access_token';
-    private readonly REFRESH_TOKEN_KEY = 'refresh_token';
+    private readonly API_URL = environment.apiUrl;
 
     private currentUserSubject = new BehaviorSubject<User | null>(null);
     public currentUser$ = this.currentUserSubject.asObservable();
 
-    constructor(private http: HttpClient, private router: Router) {
+    constructor(
+        private http: HttpClient,
+        private router: Router,
+        private tokenService: TokenService
+    ) {
         this.loadUserFromToken();
     }
 
     login(authRequest: AuthRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(`${this.API_URL}/login`, authRequest).pipe(
             tap(response => {
-                this.saveTokens(response.accessToken, response.refreshToken);
+                this.tokenService.saveTokens(response.accessToken, response.refreshToken);
                 this.loadUserFromToken();
             })
         );
@@ -33,14 +36,14 @@ export class AuthService {
     register(registerRequest: RegisterRequest): Observable<AuthResponse> {
         return this.http.post<AuthResponse>(`${this.API_URL}/register`, registerRequest).pipe(
             tap(response => {
-                this.saveTokens(response.accessToken, response.refreshToken);
+                this.tokenService.saveTokens(response.accessToken, response.refreshToken);
                 this.loadUserFromToken();
             })
         );
     }
 
     logout(): void {
-        const token = this.getAccessToken();
+        const token = this.tokenService.getAccessToken();
         if (token) {
             this.http.post(`${this.API_URL}/logout`, {}, {
                 headers: { 'Authorization': `Bearer ${token}` }
@@ -50,43 +53,30 @@ export class AuthService {
             });
         }
 
-        this.clearTokens();
+        this.tokenService.clearTokens();
         this.currentUserSubject.next(null);
         this.router.navigate(['/login']);
     }
 
-    refreshToken(): Observable<AuthResponse> {
-        const refreshToken = this.getRefreshToken();
+    refreshToken(): Observable<any> {
+        const refreshToken = this.tokenService.getRefreshToken();
         if (!refreshToken) {
-            return of(null as any);
+            return of(null);
         }
-        // Backend expects { "refreshToken": "..." }
         return this.http.post<any>(`${this.API_URL}/refresh`, { refreshToken }).pipe(
             tap(response => {
-                // Adapt response structure if needed.
-                // Backend AuthController returns Map<String, String> or similar.
-                // If response is { accessToken: "...", refreshToken: "..." }
                 const newAccessToken = response.accessToken || response['accessToken'];
                 const newRefreshToken = response.refreshToken || response['refreshToken'] || refreshToken;
 
                 if (newAccessToken) {
-                    this.saveTokens(newAccessToken, newRefreshToken);
+                    this.tokenService.saveTokens(newAccessToken, newRefreshToken);
                 }
             })
         );
     }
 
-    getAccessToken(): string | null {
-        return localStorage.getItem(this.ACCESS_TOKEN_KEY);
-    }
-
-    getRefreshToken(): string | null {
-        return localStorage.getItem(this.REFRESH_TOKEN_KEY);
-    }
-
     isAuthenticated(): boolean {
-        // Simple check. For better UX, check expiry.
-        const token = this.getAccessToken();
+        const token = this.tokenService.getAccessToken();
         if (!token) return false;
 
         try {
@@ -101,27 +91,14 @@ export class AuthService {
     hasRole(role: Role): boolean {
         const user = this.currentUserSubject.value;
         if (!user) return false;
-        // Depending on backend, roles might be string or array
         return user.roles.includes(role);
     }
 
-    private saveTokens(accessToken: string, refreshToken: string): void {
-        localStorage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
-        localStorage.setItem(this.REFRESH_TOKEN_KEY, refreshToken);
-    }
-
-    private clearTokens(): void {
-        localStorage.removeItem(this.ACCESS_TOKEN_KEY);
-        localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    }
-
     private loadUserFromToken(): void {
-        const token = this.getAccessToken();
+        const token = this.tokenService.getAccessToken();
         if (token) {
             try {
                 const decoded: any = jwtDecode(token);
-
-                // Extract roles from common JWT claims
                 let roles = decoded.roles || decoded.authorities || decoded.role || [];
                 if (!Array.isArray(roles)) {
                     roles = [roles];
@@ -135,7 +112,7 @@ export class AuthService {
                 this.currentUserSubject.next(user);
             } catch (e) {
                 console.error('Invalid token', e);
-                this.clearTokens();
+                this.tokenService.clearTokens();
             }
         }
     }

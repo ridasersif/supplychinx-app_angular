@@ -1,0 +1,66 @@
+<nav class="home-navbar">
+    <div class="container nav-content">
+        <div class="brand">
+            <span class="logo-text">SupplyChain<span class="highlight">X</span></span>
+        </div>
+        <div class="nav-links">
+            <a href="#features">Fonctionnalités</a>
+            <a href="#about">À propos</a>
+            <ng-container *ngIf="currentUser$ | async as user; else loginBtn">
+                <a [routerLink]="['/dashboard']" class="btn btn-primary">Tableau de Bord</a>
+            </ng-container>
+            <ng-template #loginBtn>
+                <a [routerLink]="['/login']" class="btn btn-outline">Connexion</a>
+            </ng-template>
+        </div>
+    </div>
+</nav>
+
+<header class="hero">
+    <div class="container hero-content">
+        <div class="hero-text">
+            <h1 class="hero-title">Optimisez votre <span class="gradient-text">Supply Chain</span> avec Intelligence
+            </h1>
+            <p class="hero-subtitle">Une plateforme intégrée pour gérer vos approvisionnements, votre production et vos
+                livraisons en temps réel.</p>
+            <div class="hero-actions">
+                <a [routerLink]="['/login']" class="btn btn-primary btn-lg">Commencer maintenant</a>
+                <a href="#features" class="btn btn-secondary btn-lg">Découvrir les modules</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="floating-card c1">📦 Approvisionnement</div>
+            <div class="floating-card c2">⚙️ Production</div>
+            <div class="floating-card c3">🚚 Livraison</div>
+        </div>
+    </div>
+</header>
+
+<section id="features" class="features-section">
+    <div class="container">
+        <h2 class="section-title">Nos Modules Clés</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🛡️</div>
+                <h3>Approvisionnement</h3>
+                <p>Gérez vos fournisseurs et matières premières avec une précision chirurgicale.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🏭</div>
+                <h3>Production</h3>
+                <p>Suivez vos ordres de production et optimisez vos processus industriels.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Distribution</h3>
+                <p>Planifiez vos livraisons et assurez la satisfaction de vos clients finaux.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="home-footer">
+    <div class="container footer-content">
+        <p>&copy; 2026 SupplyChainX. Tous droits réservés.</p>
+    </div>
+</footer>

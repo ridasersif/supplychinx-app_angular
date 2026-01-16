@@ -6,9 +6,9 @@ import { AuthService } from '../../../core/auth/auth.service';
 import { Role } from '../../../core/auth/auth.models';
 
 @Component({
-    selector: 'app-register',
+    selector: 'app-user-create',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, RouterLink],
+    imports: [CommonModule, ReactiveFormsModule],
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.css']
 })
@@ -43,7 +43,8 @@ export class RegisterComponent {
         this.authService.register(this.registerForm.value).subscribe({
             next: () => {
                 this.isLoading = false;
-                this.router.navigate(['/dashboard']);
+                alert('Utilisateur créé avec succès !');
+                this.registerForm.reset({ role: Role.ADMIN });
             },
             error: (err) => {
                 this.isLoading = false;

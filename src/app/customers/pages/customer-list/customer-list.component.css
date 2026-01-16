@@ -1,0 +1,144 @@
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-xl);
+}
+
+.header-content h1 {
+    margin-bottom: 0.2rem;
+}
+
+.header-content p {
+    color: var(--text-secondary);
+}
+
+.list-container {
+    padding: var(--spacing-lg);
+}
+
+.list-actions {
+    margin-bottom: var(--spacing-lg);
+}
+
+.search-bar {
+    position: relative;
+    max-width: 400px;
+}
+
+.search-bar i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+}
+
+.search-bar input {
+    padding-left: 35px;
+    margin-bottom: 0;
+    background-color: var(--bg-color);
+    border: 1px solid var(--border-color);
+}
+
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+}
+
+.premium-table th {
+    text-align: left;
+    padding: var(--spacing-md);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.premium-table td {
+    padding: var(--spacing-md);
+    border-bottom: 1px solid var(--border-color);
+    vertical-align: middle;
+}
+
+.premium-table tr:hover {
+    background-color: rgba(74, 144, 226, 0.03);
+}
+
+.customer-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+}
+
+.avatar-sm {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--primary-light);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.8rem;
+}
+
+.customer-name {
+    font-weight: 600;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-xs);
+}
+
+.btn-icon {
+    background: none;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.btn-icon:hover {
+    background-color: var(--bg-color);
+    color: var(--primary-color);
+}
+
+.btn-icon-edit:hover {
+    color: var(--warning-color);
+}
+
+.btn-icon-delete:hover {
+    color: var(--danger-color);
+}
+
+.no-data {
+    padding: var(--spacing-xl);
+    color: var(--text-secondary);
+}
+
+.no-data i {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.3;
+}

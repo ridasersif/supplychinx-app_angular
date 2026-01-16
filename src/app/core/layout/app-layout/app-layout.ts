@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { map, Observable } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
+import { Role } from '../../auth/auth.models';
 
 @Component({
   selector: 'app-app-layout',
@@ -38,6 +40,14 @@ import { AuthService } from '../../auth/auth.service';
           <a class="nav-item disabled">
             <span class="icon">🚚</span> Livraisons
           </a>
+
+          <!-- Admin Section -->
+          <ng-container *ngIf="isAdmin$ | async">
+            <div class="nav-section">ADMINISTRATION</div>
+            <a [routerLink]="['/admin/create-user']" routerLinkActive="active" class="nav-item">
+                <span class="icon">👤</span> Gestion Utilisateurs
+            </a>
+          </ng-container>
         </nav>
       </aside>
 
@@ -227,9 +237,13 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class AppLayoutComponent {
   currentUser$;
+  isAdmin$: Observable<boolean>;
 
-  constructor(private authService: AuthService) {
+  constructor(public authService: AuthService) {
     this.currentUser$ = this.authService.currentUser$;
+    this.isAdmin$ = this.authService.currentUser$.pipe(
+      map(user => user ? this.authService.hasRole(Role.ADMIN) : false)
+    );
   }
 
   onLogout(): void {

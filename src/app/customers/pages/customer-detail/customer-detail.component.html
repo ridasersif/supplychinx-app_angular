@@ -1,0 +1,56 @@
+<div class="page-header">
+    <div class="header-content">
+        <div class="back-link" routerLink="/customers">
+            <i class="fas fa-arrow-left"></i>
+            <span>Back to Customers</span>
+        </div>
+        <h1>Customer Profile</h1>
+    </div>
+    <div class="header-actions">
+        <button class="btn btn-outline" [routerLink]="['/customers/edit', customer?.idCustomer]">
+            <i class="fas fa-edit"></i>
+            <span>Edit Profile</span>
+        </button>
+    </div>
+</div>
+
+<div class="detail-wrapper glass-card animate-fade" *ngIf="customer; else loading">
+    <div class="profile-header">
+        <div class="profile-avatar">{{ customer.name.charAt(0).toUpperCase() }}</div>
+        <div class="profile-title">
+            <h2>{{ customer.name }}</h2>
+            <p class="status-badge"><i class="fas fa-check-circle"></i> Active Client</p>
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-item">
+            <label>Email Address</label>
+            <div class="detail-value">
+                <i class="fas fa-envelope"></i>
+                <span>{{ customer.email }}</span>
+            </div>
+        </div>
+        <div class="detail-item">
+            <label>Phone Number</label>
+            <div class="detail-value">
+                <i class="fas fa-phone"></i>
+                <span>{{ customer.phone || 'Not provided' }}</span>
+            </div>
+        </div>
+        <div class="detail-item full-width">
+            <label>Shipping Address</label>
+            <div class="detail-value">
+                <i class="fas fa-map-marker-alt"></i>
+                <span>{{ customer.address }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loading>
+    <div class="loading-state" *ngIf="isLoading">
+        <i class="fas fa-spinner fa-spin"></i>
+        <p>Loading customer profile...</p>
+    </div>
+</ng-template>
