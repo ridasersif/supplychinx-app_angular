@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { CustomerService } from '../../../core/services/customer.service';
+import { CustomerService } from '../../../../core/services/customer.service';
 import { Customer } from '../../models/customer.model';
 import { RouterLink } from '@angular/router';
 

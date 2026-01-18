@@ -1,0 +1,29 @@
+<div class="not-found-wrapper">
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="glass-card not-found-card animate-fade-in">
+        <div class="icon-container">
+            <span class="emoji">🔍</span>
+        </div>
+
+        <h1 class="error-code">404</h1>
+        <h2 class="error-title">Oups ! Page introuvable</h2>
+        <p class="error-message">
+            La page que vous recherchez semble s'être égarée dans la chaîne d'approvisionnement.
+            Ne vous inquiétez pas, nous pouvons vous aider à retrouver votre chemin.
+        </p>
+
+        <div class="actions">
+            <button (click)="goHome()" class="btn-primary">
+                <i class="fas fa-home"></i> Retour à l'accueil
+            </button>
+            <button (click)="goBack()" class="btn-secondary">
+                Page précédente
+            </button>
+        </div>
+    </div>
+</div>

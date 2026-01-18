@@ -1,15 +1,17 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/guards/auth.guard';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
+import { HomeComponent } from './features/home/home.component';
+import { NotFound } from './features/not-found/not-found';
 
 export const routes: Routes = [
     {
         path: 'auth',
-        loadChildren: () => import('./auth/auth-routing.module').then(m => m.AuthRoutingModule)
+        loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
     },
     {
         path: 'customers',
-        loadChildren: () => import('./customers/customers-routing.module').then(m => m.CustomersRoutingModule),
+        loadChildren: () => import('./features/customers/customers-routing.module').then(m => m.CustomersRoutingModule),
         canActivate: [authGuard]
     },
     {
@@ -18,8 +20,12 @@ export const routes: Routes = [
         canActivate: [authGuard]
     },
     {
+        path: 'home',
+        component: HomeComponent
+    },
+    {
         path: '',
-        redirectTo: 'dashboard',
+        redirectTo: 'home',
         pathMatch: 'full'
     },
     {
@@ -29,5 +35,9 @@ export const routes: Routes = [
     {
         path: 'register',
         redirectTo: 'auth/register'
+    },
+    {
+        path: '**',
+        component: NotFound
     }
 ];

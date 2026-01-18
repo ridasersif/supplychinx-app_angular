@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../../core/auth/auth.service';
-import { Role } from '../../../core/auth/auth.models';
+import { AuthService } from '../../../core/services/auth.service';
+import { Role } from '../../../core/models/auth.models';
 
 @Component({
     selector: 'app-user-create',
