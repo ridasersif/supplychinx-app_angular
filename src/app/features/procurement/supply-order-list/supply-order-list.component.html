@@ -1,0 +1,81 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Supply Orders</h1>
+        <p>Manage procurement orders and track status</p>
+    </div>
+    <button class="btn btn-primary" routerLink="/procurement/supply-orders/new">
+        <i class="fas fa-plus"></i>
+        <span>Create New Order</span>
+    </button>
+</div>
+
+<div class="list-container glass-card animate-fade">
+    <div class="list-actions">
+        <div class="search-bar">
+            <i class="fas fa-filter"></i>
+            <select [(ngModel)]="statusFilter" (change)="onStatusChange()">
+                <option value="">All Statuses</option>
+                <option value="EN_ATTENTE">Pending (En Attente)</option>
+                <option value="EN_COURS">In Progress (En Cours)</option>
+                <option value="RECUE">Received (Reçue)</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="premium-table-container">
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Supplier</th>
+                    <th>Date</th>
+                    <th>Status</th>
+                    <th>Items</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders">
+                    <td>#{{ order.id! }}</td>
+                    <td>
+                        <span class="supplier-name">{{ order.supplier.name }}</span>
+                    </td>
+                    <td>{{ order.orderDate | date:'mediumDate' }}</td>
+                    <td>
+                        <span class="status-badge" [ngClass]="getStatusClass(order.status)">
+                            {{ order.status }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge-count">{{ order.materials.length || 0 }} materials</span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon edit" [routerLink]="['/procurement/supply-orders/edit', order.id!]"
+                                title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" (click)="deleteOrder(order.id!)"
+                                *ngIf="order.status !== 'RECUE'" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="orders.length === 0 && !isLoading">
+                    <td colspan="6" class="text-center no-data">
+                        <i class="fas fa-clipboard-list"></i>
+                        <p>No supply orders found</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalElements > pageSize">
+        <button [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">Previous</button>
+        <span>Page {{ currentPage + 1 }}</span>
+        <button [disabled]="(currentPage + 1) * pageSize >= totalElements"
+            (click)="onPageChange(currentPage + 1)">Next</button>
+    </div>
+</div>

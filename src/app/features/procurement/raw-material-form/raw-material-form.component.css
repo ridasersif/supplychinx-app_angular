@@ -1,0 +1,227 @@
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.btn-back {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.btn-back:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateX(-5px);
+}
+
+.title-group h1 {
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.title-group p {
+    margin: 0;
+    color: var(--text-secondary);
+}
+
+.form-wrapper {
+    max-width: 900px;
+}
+
+.form-container {
+    padding: 2.5rem;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.form-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 1.5rem 0 1rem;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    color: var(--primary-dark);
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.form-section-title i {
+    font-size: 1.2rem;
+}
+
+.field-hint {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+
+/* Supplier Cards Grid */
+.suppliers-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 10px;
+}
+
+.supplier-card {
+    background: white;
+    border: 1px solid #edf2f7;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    user-select: none;
+}
+
+.supplier-card:hover {
+    border-color: var(--primary-light);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.supplier-card.selected {
+    border-color: var(--primary-color);
+    background: #ebf8ff;
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.supplier-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: #f7fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #a0aec0;
+    font-size: 1rem;
+}
+
+.supplier-card.selected .supplier-card-icon {
+    background: var(--primary-color);
+    color: white;
+}
+
+.supplier-card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.supplier-name {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.supplier-contact {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.supplier-card-checkbox {
+    font-size: 1.2rem;
+    color: #e2e8f0;
+}
+
+.supplier-card.selected .supplier-card-checkbox {
+    color: var(--primary-color);
+}
+
+/* Actions */
+.form-actions-premium {
+    margin-top: 3rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1.5rem;
+}
+
+.btn-cancel {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-weight: 600;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: color 0.2s;
+}
+
+.btn-cancel:hover {
+    color: var(--danger-color);
+}
+
+.btn-submit {
+    background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 12px 32px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 15px rgba(74, 144, 226, 0.4);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+}
+
+.btn-submit:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(74, 144, 226, 0.5);
+}
+
+.btn-submit:active {
+    transform: translateY(0);
+}
+
+.btn-submit:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    background: var(--secondary-color);
+}
+
+/* Custom Animations */
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.error-message {
+    color: var(--danger-color);
+    font-size: 0.85rem;
+    margin-top: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}

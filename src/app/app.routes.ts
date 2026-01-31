@@ -10,6 +10,11 @@ export const routes: Routes = [
         loadChildren: () => import('./features/auth/auth.routes').then(m => m.AUTH_ROUTES)
     },
     {
+        path: 'procurement',
+        loadChildren: () => import('./features/procurement/procurement.routes').then(m => m.PROCUREMENT_ROUTES),
+        canActivate: [authGuard]
+    },
+    {
         path: 'customers',
         loadChildren: () => import('./features/customers/customers-routing.module').then(m => m.CustomersRoutingModule),
         canActivate: [authGuard]

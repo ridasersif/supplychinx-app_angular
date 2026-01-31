@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { CommonModule, AsyncPipe } from '@angular/common';
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule, AsyncPipe],
+  imports: [CommonModule, AsyncPipe, RouterLink],
   template: `
     <div class="dashboard-header animate-fade" *ngIf="authService.currentUser$ | async as user">
       <h1>Welcome back, {{ user.sub.split('@')[0] }}!</h1>
@@ -28,6 +29,26 @@ import { AuthService } from '../../core/services/auth.service';
         <h3>Inventory</h3>
         <p style="font-size: 1.5rem; font-weight: 700;">85% Capacity</p>
       </div>
+    </div>
+
+    <!-- Procurement Navigation -->
+    <h2 style="margin-top: 40px; margin-bottom: 20px;">Procurement Module</h2>
+    <div class="procurement-nav animate-fade" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px;">
+        <div class="glass-card nav-card" routerLink="/procurement/suppliers" style="padding: 20px; cursor: pointer; text-align: center;">
+            <i class="fas fa-building" style="font-size: 2rem; color: #4361ee; margin-bottom: 10px;"></i>
+            <h3>Suppliers</h3>
+            <p>Manage Suppliers</p>
+        </div>
+        <div class="glass-card nav-card" routerLink="/procurement/raw-materials" style="padding: 20px; cursor: pointer; text-align: center;">
+            <i class="fas fa-cubes" style="font-size: 2rem; color: #f72585; margin-bottom: 10px;"></i>
+            <h3>Raw Materials</h3>
+            <p>Manage Inventory</p>
+        </div>
+        <div class="glass-card nav-card" routerLink="/procurement/supply-orders" style="padding: 20px; cursor: pointer; text-align: center;">
+            <i class="fas fa-clipboard-list" style="font-size: 2rem; color: #4cc9f0; margin-bottom: 10px;"></i>
+            <h3>Supply Orders</h3>
+            <p>Create & Track Orders</p>
+        </div>
     </div>
   `,
   styles: [`

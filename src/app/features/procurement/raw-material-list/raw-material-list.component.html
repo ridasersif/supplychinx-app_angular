@@ -1,0 +1,136 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Raw Material Management</h1>
+        <p>Manage raw materials and check inventory levels</p>
+    </div>
+    <button class="btn btn-primary" routerLink="/procurement/raw-materials/new">
+        <i class="fas fa-plus"></i>
+        <span>Add New Material</span>
+    </button>
+</div>
+
+<div class="list-container glass-card animate-fade">
+    <div class="list-actions">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" [(ngModel)]="searchText" (input)="onSearch()" placeholder="Search materials by name...">
+        </div>
+    </div>
+
+    <div class="premium-table-container">
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>Material</th>
+                    <th>Stock Level</th>
+                    <th>Min Stock</th>
+                    <th>Unit</th>
+                    <th>Status</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let material of materials" class="animate-fade">
+                    <td>
+                        <div class="material-info">
+                            <div class="material-icon">
+                                <i class="fas fa-cubes"></i>
+                            </div>
+                            <span class="material-name">{{ material.name }}</span>
+                        </div>
+                    </td>
+                    <td>{{ material.stock }}</td>
+                    <td>{{ material.stockMin }}</td>
+                    <td>{{ material.unit }}</td>
+                    <td>
+                        <span class="status-badge" [class.status-danger]="isCriticalStock(material)"
+                            [class.status-success]="!isCriticalStock(material)">
+                            {{ isCriticalStock(material) ? 'Critical' : 'Operational' }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon info" (click)="showInfo(material)" title="Details">
+                                <i class="fas fa-info-circle"></i>
+                            </button>
+                            <button class="btn-icon edit"
+                                [routerLink]="['/procurement/raw-materials/edit', material.id!]" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" (click)="confirmDelete(material)" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="materials.length === 0 && !isLoading">
+                    <td colspan="6" class="text-center no-data">
+                        <i class="fas fa-box-open"></i>
+                        <p>No raw materials found</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalElements > pageSize">
+        <button [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">Previous</button>
+        <span>Page {{ currentPage + 1 }}</span>
+        <button [disabled]="(currentPage + 1) * pageSize >= totalElements"
+            (click)="onPageChange(currentPage + 1)">Next</button>
+    </div>
+</div>
+
+<!-- Info Modal -->
+<app-modal [isOpen]="isDetailModalOpen" [title]="selectedMaterial?.name || 'Material Details'" (closed)="closeModals()">
+    <div class="detail-grid" *ngIf="selectedMaterial">
+        <div class="detail-item">
+            <span class="detail-label">Current Stock</span>
+            <span class="detail-value">{{ selectedMaterial.stock }} {{ selectedMaterial.unit }}</span>
+        </div>
+        <div class="detail-item">
+            <span class="detail-label">Minimum Stock</span>
+            <span class="detail-value">{{ selectedMaterial.stockMin }} {{ selectedMaterial.unit }}</span>
+        </div>
+        <div class="detail-item detail-full">
+            <span class="detail-label">Description</span>
+            <p class="detail-value">{{ selectedMaterial.description || 'No description provided.' }}</p>
+        </div>
+        <div class="detail-item detail-full">
+            <span class="detail-label">Suppliers</span>
+            <div class="suppliers-list">
+                <div *ngFor="let supplier of selectedMaterial.suppliers" class="supplier-tag">
+                    <i class="fas fa-truck"></i>
+                    {{ supplier.name }}
+                </div>
+                <p *ngIf="!selectedMaterial.suppliers?.length" class="text-secondary">No suppliers linked.</p>
+            </div>
+        </div>
+    </div>
+    <div footer>
+        <button class="btn btn-secondary" (click)="closeModals()">Close</button>
+        <button class="btn btn-primary" [routerLink]="['/procurement/raw-materials/edit', selectedMaterial?.id]">
+            Edit Material
+        </button>
+    </div>
+</app-modal>
+
+<!-- Delete Confirmation Modal -->
+<app-modal [isOpen]="isDeleteModalOpen" title="Confirm Deletion" (closed)="closeModals()">
+    <div class="confirmation-content" *ngIf="materialToDelete">
+        <p class="confirmation-text">
+            Are you sure you want to delete <span class="delete-warning">{{ materialToDelete.name }}</span>?
+        </p>
+        <div class="alert alert-warning">
+            <i class="fas fa-exclamation-triangle"></i>
+            This action cannot be undone if the material is not in use.
+        </div>
+    </div>
+    <div footer>
+        <button class="btn btn-secondary" (click)="closeModals()">Cancel</button>
+        <button class="btn btn-danger" (click)="deleteMaterial()">
+            <i class="fas fa-trash-alt"></i>
+            Delete Material
+        </button>
+    </div>
+</app-modal>

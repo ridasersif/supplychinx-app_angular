@@ -1,3 +1,6 @@
+@import './styles/tables.css';
+@import './styles/forms.css';
+
 :root {
   /* Color Palette - Modern and Sophisticated */
   --primary-color: #4a90e2;
@@ -63,67 +66,73 @@ h6 {
   margin-bottom: var(--spacing-md);
 }
 
-/* Premium Buttons */
+/* Premium Interactive Elements */
 .btn {
-  padding: 0.6rem 1.2rem;
+  padding: 0.75rem 1.5rem;
   border-radius: var(--radius-md);
   border: none;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.75rem;
+  font-size: 0.95rem;
+  letter-spacing: 0.025em;
 }
 
 .btn-primary {
-  background-color: var(--primary-color);
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
   color: white;
+  box-shadow: 0 4px 14px 0 rgba(99, 102, 241, 0.39);
 }
 
 .btn-primary:hover {
-  background-color: var(--primary-dark);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.23);
+  filter: brightness(1.1);
 }
 
 .btn-outline {
-  background-color: transparent;
-  border: 2px solid var(--primary-color);
-  color: var(--primary-color);
+  background: white;
+  border: 1px solid var(--border-light);
+  color: var(--text-main);
+  box-shadow: var(--shadow-soft);
 }
 
 .btn-outline:hover {
-  background-color: var(--primary-color);
-  color: white;
+  border-color: var(--primary);
+  color: var(--primary);
+  transform: translateY(-1px);
 }
 
-/* Glassmorphism Card (for premium feel) */
-.glass-card {
-  background: rgba(255, 255, 255, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  box-shadow: var(--shadow-lg);
-}
-
-/* Inputs */
+/* Global Input Redesign */
 input,
 select,
 textarea {
   width: 100%;
-  padding: 0.8rem;
-  border: 1px solid var(--border-color);
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--border-light);
   border-radius: var(--radius-md);
-  margin-bottom: var(--spacing-md);
-  transition: border-color 0.3s ease;
+  background: white;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
 }
 
-input:focus {
+input:focus,
+select:focus,
+textarea:focus {
   outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px var(--primary-glow);
+  transform: translateY(-1px);
+}
+
+::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
 }
 
 /* Animations */

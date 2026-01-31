@@ -13,8 +13,8 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
                 authService.logout();
             }
 
-            const errorMessage = error.error?.message || error.statusText;
-            return throwError(() => new Error(errorMessage));
+            // Pass the original error through so components can access status, error body, etc.
+            return throwError(() => error);
         })
     );
 };

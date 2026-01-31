@@ -1,0 +1,138 @@
+<div class="page-header animate-fade">
+    <div class="header-content">
+        <button class="btn-back" routerLink="/procurement/suppliers">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="title-group">
+            <h1>{{ isEditMode ? 'Edit Supplier' : 'Add New Supplier' }}</h1>
+            <p>{{ isEditMode ? 'Update supplier contact and performance metrics' : 'Register a new supplier profile into
+                the system' }}</p>
+        </div>
+    </div>
+</div>
+
+<div class="form-wrapper animate-slide-up">
+    <div class="form-container glass-card">
+        <form [formGroup]="supplierForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-section-title">
+                <i class="fas fa-id-card"></i>
+                <span>Corporate Identity</span>
+            </div>
+
+            <div class="form-grid">
+                <!-- Name -->
+                <div class="form-group">
+                    <label for="name">Supplier Name <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-building"></i>
+                        <input type="text" id="name" formControlName="name" class="form-control"
+                            placeholder="e.g. Acme Corp"
+                            [class.error]="supplierForm.get('name')?.invalid && supplierForm.get('name')?.touched">
+                    </div>
+                </div>
+
+                <!-- Contact Persona -->
+                <div class="form-group">
+                    <label for="contact">Primary Contact Person <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-user-tie"></i>
+                        <input type="text" id="contact" formControlName="contact" class="form-control"
+                            placeholder="Full Name"
+                            [class.error]="supplierForm.get('contact')?.invalid && supplierForm.get('contact')?.touched">
+                    </div>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="email">Business Email <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input type="email" id="email" formControlName="email" class="form-control"
+                            placeholder="business@supplier.com"
+                            [class.error]="supplierForm.get('email')?.invalid && supplierForm.get('email')?.touched">
+                    </div>
+                </div>
+
+                <!-- Phone -->
+                <div class="form-group">
+                    <label for="phone">Phone Number <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input type="text" id="phone" formControlName="phone" class="form-control"
+                            placeholder="+1 234 567 890">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section-title">
+                <i class="fas fa-chart-line"></i>
+                <span>Performance & Logistics</span>
+            </div>
+
+            <div class="form-grid">
+                <!-- Rating -->
+                <div class="form-group">
+                    <label for="rating">Performance Rating (0-5) <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-star"></i>
+                        <input type="number" id="rating" formControlName="rating" class="form-control" min="0" max="5"
+                            step="0.1">
+                    </div>
+                </div>
+
+                <!-- Lead Time -->
+                <div class="form-group">
+                    <label for="leadTime">Average Lead Time (Days) <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-shipping-fast"></i>
+                        <input type="number" id="leadTime" formControlName="leadTime" class="form-control" min="1">
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section-title">
+                <i class="fas fa-boxes"></i>
+                <span>Provided Materials (Optional)</span>
+            </div>
+
+            <div class="form-group full-width">
+                <p class="field-hint">Select the raw materials that this supplier is currently authorized to provide.
+                </p>
+                <div class="materials-grid">
+                    <div *ngFor="let material of availableMaterials" class="material-card"
+                        [class.selected]="isMaterialSelected(material.id!)"
+                        (click)="onToggleMaterial(material.id!, {target: {checked: !isMaterialSelected(material.id!)}})">
+                        <div class="material-card-icon">
+                            <i class="fas fa-cube"></i>
+                        </div>
+                        <div class="material-card-info">
+                            <span class="material-name">{{ material.name }}</span>
+                            <span class="material-unit">Unit: {{ material.unit }}</span>
+                        </div>
+                        <div class="material-card-checkbox">
+                            <i class="fas" [class.fa-check-circle]="isMaterialSelected(material.id!)"
+                                [class.fa-circle]="!isMaterialSelected(material.id!)"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="error-message"
+                    *ngIf="supplierForm.get('materialIds')?.invalid && (supplierForm.get('materialIds')?.touched)">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Please select at least one material if available.
+                </div>
+            </div>
+
+            <div class="form-actions-premium">
+                <button type="button" class="btn-cancel" routerLink="/procurement/suppliers">
+                    Discard Changes
+                </button>
+                <button type="submit" class="btn-submit" [disabled]="isLoading">
+                    <i class="fas" [class.fa-save]="!isLoading" [class.fa-spinner]="isLoading"
+                        [class.fa-spin]="isLoading"></i>
+                    <span>{{ isEditMode ? 'Update Supplier Profile' : 'Register Supplier' }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

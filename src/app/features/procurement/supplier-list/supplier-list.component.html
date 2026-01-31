@@ -1,0 +1,76 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Supplier Management</h1>
+        <p>Manage your suppliers and their information</p>
+    </div>
+    <button class="btn btn-primary" routerLink="/procurement/suppliers/new">
+        <i class="fas fa-plus"></i>
+        <span>Add New Supplier</span>
+    </button>
+</div>
+
+<div class="list-container glass-card animate-fade">
+    <div class="list-actions">
+        <div class="search-bar">
+            <i class="fas fa-search"></i>
+            <input type="text" [(ngModel)]="searchText" (input)="onSearch()" placeholder="Search suppliers by name...">
+        </div>
+    </div>
+
+    <div class="premium-table-container">
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Rating</th>
+                    <th>Lead Time (Days)</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let supplier of suppliers">
+                    <td>
+                        <div class="supplier-info">
+                            <div class="avatar-sm">{{ supplier.name.charAt(0).toUpperCase() }}</div>
+                            <span class="supplier-name">{{ supplier.name }}</span>
+                        </div>
+                    </td>
+                    <td>{{ supplier.contact }}</td>
+                    <td>
+                        <div class="rating">
+                            <i class="fas fa-star text-warning"></i>
+                            <span>{{ supplier.rating }}</span>
+                        </div>
+                    </td>
+                    <td>{{ supplier.leadTime }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon edit" [routerLink]="['/procurement/suppliers/edit', supplier.id!]"
+                                title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" (click)="deleteSupplier(supplier.id!)" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="suppliers.length === 0 && !isLoading">
+                    <td colspan="5" class="text-center no-data">
+                        <i class="fas fa-truck-loading"></i>
+                        <p>No suppliers found</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalElements > pageSize">
+        <!-- Implement pagination controls similar to existing ones if available -->
+        <button [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)">Previous</button>
+        <span>Page {{ currentPage + 1 }}</span>
+        <button [disabled]="(currentPage + 1) * pageSize >= totalElements"
+            (click)="onPageChange(currentPage + 1)">Next</button>
+    </div>
+</div>

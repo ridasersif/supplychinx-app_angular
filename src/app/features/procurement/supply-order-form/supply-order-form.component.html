@@ -1,0 +1,85 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>{{ isEditMode ? 'Edit Supply Order' : 'Create Supply Order' }}</h1>
+        <p>{{ isEditMode ? 'Update order details' : 'Place a new order with a supplier' }}</p>
+    </div>
+</div>
+
+<div class="form-container glass-card animate-fade">
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+        <div class="form-grid">
+            <!-- Supplier -->
+            <div class="form-group">
+                <label for="supplier">Supplier <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-truck"></i>
+                    <select id="supplier" formControlName="supplierId" class="form-control">
+                        <option [ngValue]="null">Select a supplier</option>
+                        <option *ngFor="let supplier of suppliers" [value]="supplier.id">
+                            {{ supplier.name }}
+                        </option>
+                    </select>
+                </div>
+                <div class="error-message"
+                    *ngIf="orderForm.get('supplierId')?.invalid && orderForm.get('supplierId')?.touched">
+                    Supplier is required.
+                </div>
+            </div>
+
+            <!-- Date -->
+            <div class="form-group">
+                <label for="orderDate">Order Date <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-calendar"></i>
+                    <input type="date" id="orderDate" formControlName="orderDate" class="form-control">
+                </div>
+            </div>
+
+            <!-- Status (only edit mode?) or always visible? -->
+            <div class="form-group">
+                <label for="status">Status</label>
+                <div class="input-wrapper">
+                    <i class="fas fa-info-circle"></i>
+                    <select id="status" formControlName="status" class="form-control">
+                        <option value="EN_ATTENTE">Pending (En Attente)</option>
+                        <option value="EN_COURS">In Progress (En Cours)</option>
+                        <option value="RECUE">Received (Reçue)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Materials -->
+            <div class="form-group full-width">
+                <label for="materials">Materials <span class="required">*</span></label>
+                <div class="input-wrapper">
+                    <i class="fas fa-boxes"></i>
+                    <select id="materials" multiple formControlName="materialIds" class="form-control multi-select"
+                        [class.disabled]="filteredMaterials.length === 0">
+                        <option *ngFor="let material of filteredMaterials" [value]="material.id">
+                            {{ material.name }} (Stock: {{ material.stock }} {{ material.unit }})
+                        </option>
+                    </select>
+                </div>
+                <div *ngIf="filteredMaterials.length === 0 && orderForm.get('supplierId')?.value"
+                    class="info-text text-warning mt-2">
+                    <i class="fas fa-exclamation-triangle"></i> No materials found for selected supplier.
+                </div>
+                <div *ngIf="!orderForm.get('supplierId')?.value" class="info-text mt-2">
+                    <i class="fas fa-info-circle"></i> Select a supplier to see available materials.
+                </div>
+                <small class="form-text">Hold Ctrl to select multiple materials</small>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-secondary" routerLink="/procurement/supply-orders">
+                Cancel
+            </button>
+            <button type="submit" class="btn btn-primary">
+                <i class="fas" [class.fa-save]="!isLoading" [class.fa-spinner]="isLoading"
+                    [class.fa-spin]="isLoading"></i>
+                <span>{{ isEditMode ? 'Update Order' : 'Create Order' }}</span>
+            </button>
+        </div>
+    </form>
+</div>
