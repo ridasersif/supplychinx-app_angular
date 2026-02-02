@@ -55,13 +55,6 @@ export class SupplierListComponent implements OnInit {
                     this.suppliers.length;
 
                 this.isLoading = false;
-
-                // DIAGNOSTIC TOAST
-                if (this.suppliers.length > 0) {
-                    this.notificationService.show(`Loaded ${this.suppliers.length} suppliers successfully.`, 'success');
-                } else {
-                    this.notificationService.show('No suppliers found (List is empty).', 'warning');
-                }
             },
             error: (error) => {
                 console.error('Error loading suppliers', error);

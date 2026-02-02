@@ -62,13 +62,6 @@ export class RawMaterialListComponent implements OnInit {
                     this.materials.length;
 
                 this.isLoading = false;
-
-                // DIAGNOSTIC TOAST
-                if (this.materials.length > 0) {
-                    this.notificationService.show(`Loaded ${this.materials.length} materials.`, 'success');
-                } else {
-                    this.notificationService.show('No raw materials found.', 'warning');
-                }
             },
             error: (error) => {
                 console.error('Error loading materials', error);

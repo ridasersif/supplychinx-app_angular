@@ -55,13 +55,6 @@ export class SupplyOrderListComponent implements OnInit {
                     this.orders.length;
 
                 this.isLoading = false;
-
-                // DIAGNOSTIC TOAST
-                if (this.orders.length > 0) {
-                    this.notificationService.show(`Loaded ${this.orders.length} orders.`, 'success');
-                } else {
-                    this.notificationService.show('No supply orders found.', 'warning');
-                }
             },
             error: (error) => {
                 console.error('Error loading orders', error);
