@@ -1,6 +1,6 @@
 <div class="app-container">
-    <!-- Sidebar - Only for Authenticated Users -->
-    <aside class="sidebar glass-card" *ngIf="authService.currentUser$ | async as user">
+    <!-- Sidebar - Only for Authenticated Users on Dashboard Views -->
+    <aside class="sidebar glass-card" *ngIf="(authService.currentUser$ | async) && showDashboardLayout">
         <div class="sidebar-header">
             <i class="fas fa-boxes-stacked logo-icon"></i>
             <span>SupplyChainX</span>
@@ -37,7 +37,7 @@
         </nav>
 
         <div class="sidebar-footer">
-            <div class="user-info">
+            <div class="user-info" *ngIf="authService.currentUser$ | async as user">
                 <div class="user-avatar">{{ user.sub.charAt(0).toUpperCase() }}</div>
                 <div class="user-details">
                     <span class="user-name">{{ user.sub.split('@')[0] }}</span>
@@ -51,9 +51,9 @@
     </aside>
 
     <!-- Main Content Area -->
-    <main class="main-content" [class.full-width]="!(authService.currentUser$ | async)">
-        <!-- Topbar - Only for Authenticated Users -->
-        <header class="topbar glass-card" *ngIf="authService.currentUser$ | async">
+    <main class="main-content" [class.full-width]="!(authService.currentUser$ | async) || !showDashboardLayout">
+        <!-- Topbar - Only for Authenticated Users on Dashboard Views -->
+        <header class="topbar glass-card" *ngIf="(authService.currentUser$ | async) && showDashboardLayout">
             <div class="page-title">
                 <!-- We can dynamically set this later -->
                 <h3>Overview</h3>

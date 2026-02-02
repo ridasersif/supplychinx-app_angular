@@ -1,60 +1,71 @@
 /* Premium Form Styles */
 .form-container {
     max-width: 900px;
-    margin: 2rem auto;
-    padding: 3rem;
+    margin: var(--s-8) auto;
+    padding: var(--s-10);
     background: white;
-    border-radius: var(--radius-xl);
+    border-radius: var(--radius-lg);
     box-shadow: var(--shadow-premium);
+    transition: transform 0.3s ease;
     border: 1px solid var(--border-light);
 }
 
 .form-header {
-    margin-bottom: 3rem;
-    padding-bottom: 24px;
-    border-bottom: 1px solid var(--border-light);
+    margin-bottom: var(--s-8);
+    padding-bottom: var(--s-4);
+    border-bottom: 2px solid var(--bg-main);
 }
 
 .form-header h2 {
     font-size: 1.75rem;
     font-weight: 800;
     color: var(--text-main);
+    margin-bottom: var(--s-1);
+    letter-spacing: -0.02em;
 }
 
 .form-header p {
     color: var(--text-muted);
-    font-size: 1rem;
+    font-size: 0.95rem;
+}
+
+.form-group {
+    margin-bottom: var(--s-6);
 }
 
 .form-label {
     display: block;
-    margin-bottom: 10px;
-    font-weight: 600;
+    margin-bottom: var(--s-2);
+    font-weight: 700;
     color: var(--text-main);
-    font-size: 0.9rem;
-    letter-spacing: 0.02em;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.9;
 }
 
 .form-control {
     width: 100%;
-    padding: 14px 20px;
-    font-size: 1rem;
+    padding: 0.875rem 1.25rem;
+    font-size: 0.9375rem;
     color: var(--text-main);
-    background: #f8fafc;
-    border: 1.5px solid #e2e8f0;
+    background: var(--bg-main);
+    border: 2px solid transparent;
     border-radius: var(--radius-md);
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .form-control:focus {
     background: white;
     border-color: var(--primary);
-    box-shadow: 0 0 0 4px var(--primary-glow);
+    box-shadow: 0 0 0 5px var(--primary-glow);
+    outline: none;
     transform: translateY(-1px);
 }
 
 .form-control::placeholder {
-    color: #94a3b8;
+    color: var(--text-muted);
+    opacity: 0.5;
 }
 
 /* Input Wrapper with Icons */
@@ -66,119 +77,105 @@
 
 .input-wrapper i {
     position: absolute;
-    left: 18px;
-    color: #94a3b8;
+    left: 1.125rem;
+    color: var(--text-muted);
     transition: all 0.2s;
     pointer-events: none;
     font-size: 1.1rem;
+    opacity: 0.5;
 }
 
-.input-wrapper input:focus+i,
-.input-wrapper select:focus+i,
-.input-wrapper textarea:focus+i {
+.input-wrapper input:focus+i {
     color: var(--primary);
+    opacity: 1;
 }
 
 /* Adjust form-control for icon */
-.form-control {
-    width: 100%;
-    padding: 12px 16px 12px 44px;
-    /* Left padding for icon */
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #2d3748;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #e2e8f0;
-    border-radius: 8px;
-    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+.input-wrapper .form-control {
+    padding-left: 3.25rem;
 }
 
 /* Select specific styles */
 select.form-control {
     appearance: none;
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23a0aec0'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2364748b'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
     background-repeat: no-repeat;
     background-position: right 1rem center;
-    background-size: 1.5em;
+    background-size: 1.25rem;
     padding-right: 2.5rem;
 }
 
 /* Validation Styles */
 .form-text-error {
-    margin-top: 6px;
-    font-size: 0.85rem;
-    color: #e53e3e;
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: var(--danger);
+    font-weight: 500;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 0.25rem;
 }
 
 .form-control.ng-invalid.ng-touched {
-    border-color: #fc8181;
+    border-color: rgba(239, 68, 68, 0.3);
+    background-color: #fffafb;
 }
 
 .form-control.ng-invalid.ng-touched:focus {
-    box-shadow: 0 0 0 3px rgba(245, 101, 101, 0.15);
+    border-color: var(--danger);
+    box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.1);
 }
 
 /* Checkbox & Radios */
 .form-check {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 14px 18px;
-    border: 1.5px solid #e2e8f0;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    border: 1.5px solid var(--border-light);
     border-radius: var(--radius-md);
     cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease;
 }
 
 .form-check:hover {
-    background: #f8fafc;
+    background: var(--bg-main);
     border-color: var(--primary-glow);
 }
 
 .form-check.active {
-    background: #eff6ff;
+    background: var(--primary-glow);
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px var(--primary-glow);
-}
-
-.form-check-input {
-    width: 1.2em;
-    height: 1.2em;
-    cursor: pointer;
 }
 
 /* Form Actions (Buttons) */
 .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 16px;
-    margin-top: 40px;
-    padding-top: 24px;
-    border-top: 2px solid #f7fafc;
+    gap: var(--space-md);
+    margin-top: var(--space-xl);
+    padding-top: var(--space-lg);
+    border-top: 2px solid var(--bg-main);
 }
 
 /* Responsive Grid for Forms */
 .form-row {
     display: flex;
     flex-wrap: wrap;
-    margin-right: -10px;
-    margin-left: -10px;
+    margin: 0 -0.5rem;
 }
 
 .form-col {
     flex: 1;
-    padding-right: 10px;
-    padding-left: 10px;
-    min-width: 250px;
+    padding: 0 0.5rem;
+    min-width: 200px;
+    margin-bottom: var(--space-md);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 640px) {
     .form-container {
-        padding: 20px;
+        padding: var(--space-lg);
+        margin: var(--space-md);
     }
 
     .form-col {

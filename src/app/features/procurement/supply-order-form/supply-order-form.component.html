@@ -1,85 +1,110 @@
-<div class="page-header">
+<div class="page-header animate-fade">
     <div class="header-content">
-        <h1>{{ isEditMode ? 'Edit Supply Order' : 'Create Supply Order' }}</h1>
-        <p>{{ isEditMode ? 'Update order details' : 'Place a new order with a supplier' }}</p>
+        <button class="btn-back" routerLink="/procurement/supply-orders">
+            <i class="fas fa-arrow-left"></i>
+        </button>
+        <div class="title-group">
+            <h1>{{ isEditMode ? 'Edit Supply Order' : 'Create Supply Order' }}</h1>
+            <p>{{ isEditMode ? 'Update order tracking and fulfillment status' : 'Place a new raw material order with a
+                supplier' }}</p>
+        </div>
     </div>
 </div>
 
-<div class="form-container glass-card animate-fade">
-    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
-        <div class="form-grid">
-            <!-- Supplier -->
-            <div class="form-group">
-                <label for="supplier">Supplier <span class="required">*</span></label>
-                <div class="input-wrapper">
-                    <i class="fas fa-truck"></i>
-                    <select id="supplier" formControlName="supplierId" class="form-control">
-                        <option [ngValue]="null">Select a supplier</option>
-                        <option *ngFor="let supplier of suppliers" [value]="supplier.id">
-                            {{ supplier.name }}
-                        </option>
-                    </select>
+<div class="form-wrapper animate-slide-up">
+    <div class="form-container glass-card">
+        <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+
+            <div class="form-section-title">
+                <i class="fas fa-truck"></i>
+                <span>Order Logistics</span>
+            </div>
+
+            <div class="form-grid">
+                <!-- Supplier -->
+                <div class="form-group">
+                    <label for="supplier">Partner Supplier <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-building"></i>
+                        <select id="supplier" formControlName="supplierId" class="form-control">
+                            <option [ngValue]="null">Select a supplier</option>
+                            <option *ngFor="let supplier of suppliers" [ngValue]="supplier.id">
+                                {{ supplier.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="error-message"
+                        *ngIf="orderForm.get('supplierId')?.invalid && orderForm.get('supplierId')?.touched">
+                        <i class="fas fa-exclamation-triangle"></i> Supplier selection is required.
+                    </div>
                 </div>
-                <div class="error-message"
-                    *ngIf="orderForm.get('supplierId')?.invalid && orderForm.get('supplierId')?.touched">
-                    Supplier is required.
+
+                <!-- Date -->
+                <div class="form-group">
+                    <label for="orderDate">Requested Order Date <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-calendar-alt"></i>
+                        <input type="date" id="orderDate" formControlName="orderDate" class="form-control">
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label for="status">Order Fulfillment Status <span class="required">*</span></label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-clipboard-check"></i>
+                        <select id="status" formControlName="status" class="form-control">
+                            <option value="EN_ATTENTE">Pending (En Attente)</option>
+                            <option value="EN_COURS">In Progress (En Cours)</option>
+                            <option value="RECUE">Received (Reçue)</option>
+                        </select>
+                    </div>
                 </div>
             </div>
 
-            <!-- Date -->
-            <div class="form-group">
-                <label for="orderDate">Order Date <span class="required">*</span></label>
-                <div class="input-wrapper">
-                    <i class="fas fa-calendar"></i>
-                    <input type="date" id="orderDate" formControlName="orderDate" class="form-control">
-                </div>
+            <div class="form-section-title">
+                <i class="fas fa-cubes"></i>
+                <span>Material Selection</span>
             </div>
 
-            <!-- Status (only edit mode?) or always visible? -->
-            <div class="form-group">
-                <label for="status">Status</label>
-                <div class="input-wrapper">
-                    <i class="fas fa-info-circle"></i>
-                    <select id="status" formControlName="status" class="form-control">
-                        <option value="EN_ATTENTE">Pending (En Attente)</option>
-                        <option value="EN_COURS">In Progress (En Cours)</option>
-                        <option value="RECUE">Received (Reçue)</option>
-                    </select>
-                </div>
-            </div>
-
-            <!-- Materials -->
             <div class="form-group full-width">
-                <label for="materials">Materials <span class="required">*</span></label>
+                <label for="materials">Select Raw Materials <span class="required">*</span></label>
+                <p class="field-hint">Hold Ctrl (or Cmd) to select multiple materials for this order.</p>
+
                 <div class="input-wrapper">
                     <i class="fas fa-boxes"></i>
-                    <select id="materials" multiple formControlName="materialIds" class="form-control multi-select"
-                        [class.disabled]="filteredMaterials.length === 0">
-                        <option *ngFor="let material of filteredMaterials" [value]="material.id">
-                            {{ material.name }} (Stock: {{ material.stock }} {{ material.unit }})
+                    <select id="materials" multiple formControlName="materialIds"
+                        class="form-control multi-select-premium" [class.disabled]="filteredMaterials.length === 0">
+                        <option *ngFor="let material of filteredMaterials" [ngValue]="material.id">
+                            {{ material.name }} | Stock: {{ material.stock }} {{ material.unit }}
                         </option>
                     </select>
                 </div>
-                <div *ngIf="filteredMaterials.length === 0 && orderForm.get('supplierId')?.value"
-                    class="info-text text-warning mt-2">
-                    <i class="fas fa-exclamation-triangle"></i> No materials found for selected supplier.
-                </div>
-                <div *ngIf="!orderForm.get('supplierId')?.value" class="info-text mt-2">
-                    <i class="fas fa-info-circle"></i> Select a supplier to see available materials.
-                </div>
-                <small class="form-text">Hold Ctrl to select multiple materials</small>
-            </div>
-        </div>
 
-        <div class="form-actions">
-            <button type="button" class="btn btn-secondary" routerLink="/procurement/supply-orders">
-                Cancel
-            </button>
-            <button type="submit" class="btn btn-primary">
-                <i class="fas" [class.fa-save]="!isLoading" [class.fa-spinner]="isLoading"
-                    [class.fa-spin]="isLoading"></i>
-                <span>{{ isEditMode ? 'Update Order' : 'Create Order' }}</span>
-            </button>
-        </div>
-    </form>
+                <!-- Dynamic Feedback -->
+                <div *ngIf="orderForm.get('supplierId')?.value && !isSupplierLinkedToAnyMaterial()"
+                    class="alert-premium warning mt-3">
+                    <i class="fas fa-info-circle"></i>
+                    <span>This supplier is not linked to any materials yet. Showing all available materials as
+                        fallback.</span>
+                </div>
+
+                <div class="error-message"
+                    *ngIf="orderForm.get('materialIds')?.invalid && orderForm.get('materialIds')?.touched">
+                    <i class="fas fa-exclamation-triangle"></i> At least one material must be selected for the order.
+                </div>
+            </div>
+
+            <div class="form-actions-premium">
+                <button type="button" class="btn-cancel" routerLink="/procurement/supply-orders">
+                    Discard Changes
+                </button>
+                <button type="submit" class="btn-submit" [disabled]="isLoading">
+                    <i class="fas" [class.fa-save]="!isLoading" [class.fa-spinner]="isLoading"
+                        [class.fa-spin]="isLoading"></i>
+                    <span>{{ isEditMode ? 'Update Supply Order' : 'Create Order' }}</span>
+                </button>
+            </div>
+        </form>
+    </div>
 </div>

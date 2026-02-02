@@ -1,12 +1,11 @@
 /* Premium Table Styles */
 .premium-table-container {
     overflow-x: auto;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    /* Softer shadow */
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-soft);
     background: white;
-    /* Or slight glass effect if preferred contextually */
-    border: 1px solid rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--border-light);
+    margin-bottom: var(--s-8);
 }
 
 .premium-table {
@@ -14,20 +13,17 @@
     border-collapse: separate;
     border-spacing: 0;
     min-width: 800px;
-    /* Ensure it doesn't squish too much */
 }
 
 .premium-table thead th {
-    background-color: #f8f9fc;
-    /* Light gray background for header */
-    color: #4a5568;
-    /* Darker clean text */
-    font-weight: 600;
+    background-color: var(--bg-main);
+    color: var(--text-muted);
+    font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.75rem;
-    letter-spacing: 0.05em;
-    padding: 16px 24px;
-    border-bottom: 2px solid #edf2f7;
+    font-size: 0.6875rem;
+    letter-spacing: 0.125em;
+    padding: 1.25rem 1.5rem;
+    border-bottom: 2px solid var(--border-light);
     text-align: left;
     position: sticky;
     top: 0;
@@ -39,125 +35,146 @@
 }
 
 .premium-table tbody tr:hover {
-    background-color: #f7fafc;
-    transform: scale(1.002);
-    /* Subtle pop */
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
-    z-index: 1;
-    position: relative;
+    background-color: var(--bg-main);
 }
 
 .premium-table td {
-    padding: 16px 24px;
+    padding: 1.25rem 1.5rem;
     vertical-align: middle;
-    border-bottom: 1px solid #edf2f7;
-    color: #2d3748;
-    font-size: 0.95rem;
+    border-bottom: 1px solid var(--border-light);
+    color: var(--text-main);
+    font-size: 0.9rem;
+}
+
+.premium-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 /* Specific Columns Styling */
 .supplier-name,
 .material-name {
-    font-weight: 600;
-    color: #2d3748;
+    font-weight: 700;
+    color: var(--text-main);
+    font-size: 0.95rem;
 }
 
 .user-avatar-small {
     width: 32px;
     height: 32px;
-    border-radius: 50%;
-    background: #e2e8f0;
+    border-radius: 10px;
+    background: var(--primary-gradient);
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.8rem;
-    color: #4a5568;
-    margin-right: 12px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: white;
+    margin-right: var(--s-3);
+    box-shadow: 0 2px 4px var(--primary-glow);
 }
 
 /* Status Badges */
 .status-badge {
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
+    padding: 0.4375rem 0.875rem;
+    border-radius: 8px;
+    font-size: 0.6875rem;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.025em;
-    display: inline-block;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
 }
 
 .status-badge.success,
 .status-badge.recue {
-    background-color: #c6f6d5;
-    color: #22543d;
+    background-color: rgba(16, 185, 129, 0.15);
+    color: var(--success);
 }
 
 .status-badge.warning,
 .status-badge.en_cours {
-    background-color: #feebc8;
-    color: #744210;
+    background-color: rgba(245, 158, 11, 0.15);
+    color: var(--warning);
 }
 
 .status-badge.danger {
-    background-color: #fed7d7;
-    color: #742a2a;
+    background-color: rgba(244, 63, 94, 0.15);
+    color: var(--danger);
 }
 
 .status-badge.info,
 .status-badge.en_attente {
-    background-color: #bee3f8;
-    color: #2c5282;
+    background-color: rgba(14, 165, 233, 0.15);
+    color: var(--info);
 }
 
 /* Action Buttons */
 .action-buttons {
     display: flex;
-    gap: 8px;
+    gap: 0.5rem;
     justify-content: flex-end;
 }
 
 .btn-icon {
     width: 32px;
     height: 32px;
-    border-radius: 8px;
-    border: none;
+    border-radius: 6px;
+    border: 1px solid var(--border-light);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s;
-    background: transparent;
-    color: #a0aec0;
+    transition: all 0.2s ease;
+    background: white;
+    color: var(--text-muted);
 }
 
 .btn-icon:hover {
-    background: #edf2f7;
-    color: #4a5568;
+    background: var(--bg-main);
+    color: var(--text-main);
+    border-color: var(--primary);
 }
 
 .btn-icon.edit:hover {
-    color: #4299e1;
-    background: #ebf8ff;
+    color: var(--primary);
+    background: var(--primary-glow);
+    border-color: var(--primary);
 }
 
 .btn-icon.delete:hover {
-    color: #f56565;
-    background: #fff5f5;
+    color: var(--danger);
+    background: #fee2e2;
+    border-color: var(--danger);
 }
 
 /* Empty State */
 .empty-state {
-    padding: 60px;
+    padding: 5rem 2rem;
     text-align: center;
-    color: #a0aec0;
+    color: var(--text-muted);
 }
 
 .empty-state i {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    opacity: 0.5;
+    font-size: 3.5rem;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--border-light), var(--text-muted));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.4;
 }
 
 .empty-state p {
     font-size: 1.1rem;
+    font-weight: 500;
 }

@@ -2,10 +2,10 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-modal',
-    standalone: true,
-    imports: [CommonModule],
-    template: `
+  selector: 'app-modal',
+  standalone: true,
+  imports: [CommonModule],
+  template: `
     <div class="modal-overlay" *ngIf="isOpen" (click)="close($event)">
       <div class="modal-container glass animate-zoom" (click)="$event.stopPropagation()">
         <div class="modal-header">
@@ -23,17 +23,17 @@ import { CommonModule } from '@angular/common';
       </div>
     </div>
   `,
-    styles: [`
+  styles: [`
     .modal-overlay {
       position: fixed;
       inset: 0;
       background: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
       justify-content: center;
       z-index: 1000;
-      padding: 24px;
+      padding: var(--s-6);
     }
 
     .modal-container {
@@ -41,28 +41,31 @@ import { CommonModule } from '@angular/common';
       max-width: 550px;
       padding: 0;
       overflow: hidden;
-      border-radius: var(--radius-xl);
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      background: white;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-premium);
+      border: 1px solid var(--border-light);
     }
 
     .modal-header {
-      padding: 24px 32px;
+      padding: var(--s-6) var(--s-8);
       border-bottom: 1px solid var(--border-light);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      background: rgba(255, 255, 255, 0.5);
+      background: var(--bg-main);
     }
 
     .modal-header h3 {
       margin: 0;
       font-size: 1.5rem;
       font-weight: 800;
+      color: var(--text-main);
     }
 
     .btn-close {
-      background: #f1f5f9;
-      border: none;
+      background: white;
+      border: 1px solid var(--border-light);
       color: var(--text-muted);
       cursor: pointer;
       width: 36px;
@@ -71,49 +74,52 @@ import { CommonModule } from '@angular/common';
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .btn-close:hover {
       background: var(--danger);
       color: white;
+      border-color: var(--danger);
       transform: rotate(90deg);
     }
 
     .modal-body {
-      padding: 32px;
+      padding: var(--s-8);
       max-height: 70vh;
       overflow-y: auto;
       color: var(--text-main);
+      font-size: 0.9375rem;
+      line-height: 1.6;
     }
 
     .modal-footer {
-      padding: 20px 32px;
+      padding: var(--s-5) var(--s-8);
       border-top: 1px solid var(--border-light);
       display: flex;
       justify-content: flex-end;
-      gap: 16px;
-      background: rgba(248, 250, 252, 0.5);
+      gap: var(--s-4);
+      background: var(--bg-main);
     }
 
     @keyframes zoomIn {
-      from { opacity: 0; transform: scale(0.9) translateY(20px); }
+      from { opacity: 0; transform: scale(0.95) translateY(10px); }
       to { opacity: 1; transform: scale(1) translateY(0); }
     }
 
     .animate-zoom {
-      animation: zoomIn 0.4s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+      animation: zoomIn 0.3s cubic-bezier(0.19, 1, 0.22, 1) forwards;
     }
   `]
 })
 export class ModalComponent {
-    @Input() title: string = 'Modal Title';
-    @Input() isOpen: boolean = false;
-    @Input() showFooter: boolean = true;
-    @Output() closed = new EventEmitter<void>();
+  @Input() title: string = 'Modal Title';
+  @Input() isOpen: boolean = false;
+  @Input() showFooter: boolean = true;
+  @Output() closed = new EventEmitter<void>();
 
-    close(event?: MouseEvent): void {
-        this.isOpen = false;
-        this.closed.emit();
-    }
+  close(event?: MouseEvent): void {
+    this.isOpen = false;
+    this.closed.emit();
+  }
 }

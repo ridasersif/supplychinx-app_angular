@@ -107,15 +107,21 @@ export class SupplyOrderFormComponent implements OnInit {
         });
     }
 
-    filterMaterialsBySupplier(supplierId: number): void {
+    filterMaterialsBySupplier(supplierId: any): void {
         if (!supplierId || !this.allMaterials.length) {
             this.filteredMaterials = [];
             return;
         }
-        // Filter materials that have this supplier in their list
+        // Use == to handle string/number comparison from select values
         this.filteredMaterials = this.allMaterials.filter(material =>
-            material.suppliers?.some(s => s.id === supplierId)
+            material.suppliers?.some(s => s.id == supplierId)
         );
+
+        // If no materials are linked to this supplier yet, show all as fallback
+        // to avoid blocking the user during initial data seeding
+        if (this.filteredMaterials.length === 0) {
+            this.filteredMaterials = [...this.allMaterials];
+        }
     }
 
     loadOrder(id: number): void {
@@ -140,6 +146,29 @@ export class SupplyOrderFormComponent implements OnInit {
                 this.isLoading = false;
             }
         });
+    }
+
+    onToggleMaterial(materialId: number): void {
+        const materialIds = this.orderForm.get('materialIds')?.value as number[];
+        if (materialIds.includes(materialId)) {
+            this.orderForm.get('materialIds')?.setValue(materialIds.filter(id => id !== materialId));
+        } else {
+            this.orderForm.get('materialIds')?.setValue([...materialIds, materialId]);
+        }
+        this.orderForm.get('materialIds')?.markAsTouched();
+    }
+
+    isMaterialSelected(materialId: number): boolean {
+        const materialIds = this.orderForm.get('materialIds')?.value as number[];
+        return materialIds && materialIds.includes(materialId);
+    }
+
+    isSupplierLinkedToAnyMaterial(): boolean {
+        const supplierId = this.orderForm.get('supplierId')?.value;
+        if (!supplierId || !this.allMaterials.length) return true;
+        return this.allMaterials.some(material =>
+            material.suppliers?.some(s => s.id == supplierId)
+        );
     }
 
     onSubmit(): void {
