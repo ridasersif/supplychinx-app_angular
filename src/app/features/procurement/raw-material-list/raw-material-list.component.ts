@@ -92,9 +92,9 @@ export class RawMaterialListComponent implements OnInit {
     }
 
     deleteMaterial(): void {
-        if (!this.materialToDelete || !this.materialToDelete.id) return;
+        if (!this.materialToDelete || !(this.materialToDelete.idMaterial || this.materialToDelete.id)) return;
 
-        const id = this.materialToDelete.id;
+        const id = (this.materialToDelete.idMaterial || this.materialToDelete.id)!;
         this.rawMaterialService.deleteRawMaterial(id).subscribe({
             next: () => {
                 this.notificationService.show('Material deleted successfully', 'success');

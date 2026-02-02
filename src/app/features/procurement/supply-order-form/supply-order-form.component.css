@@ -269,3 +269,30 @@
     gap: var(--s-2);
     font-weight: 600;
 }
+
+.material-card-checkbox {
+    font-size: 1.3rem;
+    color: var(--border-light);
+    transition: all 0.2s;
+    margin-left: auto;
+}
+
+.material-card-order.selected .material-card-checkbox {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+.empty-state-mini {
+    text-align: center;
+    padding: var(--s-8) var(--s-4);
+    background: var(--bg-main);
+    border-radius: var(--radius-md);
+    border: 2px dashed var(--border-light);
+    color: var(--text-muted);
+}
+
+.empty-state-mini i {
+    font-size: 2.5rem;
+    margin-bottom: var(--s-2);
+    opacity: 0.5;
+}

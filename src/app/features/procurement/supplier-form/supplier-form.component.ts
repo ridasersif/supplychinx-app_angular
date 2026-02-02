@@ -138,7 +138,7 @@ export class SupplierFormComponent implements OnInit {
         this.isLoading = true;
         const supplierData: Supplier = {
             ...this.supplierForm.value,
-            id: this.isEditMode ? this.supplierId : undefined
+            idSupplier: this.isEditMode ? this.supplierId : undefined
         };
 
         if (this.isEditMode && this.supplierId) {

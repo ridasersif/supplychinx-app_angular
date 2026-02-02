@@ -75,8 +75,9 @@ export class SupplierListComponent implements OnInit {
     }
 
     deleteSupplier(id: number): void {
+        const targetId = id; // The id passed comes from the template fallback already
         if (confirm('Are you sure you want to delete this supplier?')) {
-            this.supplierService.deleteSupplier(id).subscribe({
+            this.supplierService.deleteSupplier(targetId).subscribe({
                 next: () => {
                     this.notificationService.show('Supplier deleted successfully', 'success');
                     this.loadSuppliers();

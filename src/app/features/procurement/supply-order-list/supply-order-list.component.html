@@ -37,12 +37,12 @@
             <tbody>
                 <tr *ngFor="let order of orders" class="animate-fade">
                     <td>
-                        <span class="order-id">#{{ order.id! }}</span>
+                        <span class="order-id">#{{ order.idOrder || order.id! }}</span>
                     </td>
                     <td>
                         <div class="supplier-info">
                             <i class="fas fa-building text-muted"></i>
-                            <span class="supplier-name">{{ order.supplier.name }}</span>
+                            <span class="supplier-name">{{ order.supplier?.name || 'Unknown' }}</span>
                         </div>
                     </td>
                     <td>
@@ -59,16 +59,17 @@
                     <td>
                         <span class="badge-pill">
                             <i class="fas fa-boxes"></i>
-                            {{ order.materials.length || 0 }} SKU
+                            {{ order.orderLines?.length || 0 }} SKU
                         </span>
                     </td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-icon edit" [routerLink]="['/procurement/supply-orders/edit', order.id!]"
+                            <button class="btn-icon edit"
+                                [routerLink]="['/procurement/supply-orders/edit', order.idOrder || order.id!]"
                                 title="Edit Order">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn-icon delete" (click)="deleteOrder(order.id!)"
+                            <button class="btn-icon delete" (click)="deleteOrder((order.idOrder || order.id)!)"
                                 *ngIf="order.status !== 'RECUE'" title="Cancel Order">
                                 <i class="fas fa-times-circle"></i>
                             </button>

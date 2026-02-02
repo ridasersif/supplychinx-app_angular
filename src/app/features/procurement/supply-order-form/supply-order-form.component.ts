@@ -114,7 +114,7 @@ export class SupplyOrderFormComponent implements OnInit {
         }
         // Use == to handle string/number comparison from select values
         this.filteredMaterials = this.allMaterials.filter(material =>
-            material.suppliers?.some(s => s.id == supplierId)
+            material.suppliers?.some(s => (s.idSupplier || s.id) == supplierId)
         );
 
         // If no materials are linked to this supplier yet, show all as fallback
@@ -127,19 +127,23 @@ export class SupplyOrderFormComponent implements OnInit {
     loadOrder(id: number): void {
         this.isLoading = true;
         this.supplyOrderService.getSupplyOrderById(id).subscribe({
-            next: (response) => {
-                const order = response.data;
-                this.orderForm.patchValue({
-                    supplierId: order.supplier.id,
-                    materialIds: order.materials.map(m => m.id),
-                    status: order.status,
-                    orderDate: order.orderDate
-                });
-                this.isLoading = false;
-                // Trigger filter
-                if (order.supplier.id) {
-                    this.filterMaterialsBySupplier(order.supplier.id);
+            next: (response: any) => {
+                // Robust extraction: backend might wrap in .data or return directly
+                const order = response.data || response;
+
+                if (order) {
+                    this.orderForm.patchValue({
+                        supplierId: order.supplier?.idSupplier || order.supplier?.id,
+                        materialIds: order.orderLines?.map((l: any) => l.rawMaterial?.idMaterial || l.rawMaterial?.id) || [],
+                        status: order.status,
+                        orderDate: order.orderDate
+                    });
+
+                    if (order.supplier?.idSupplier) {
+                        this.filterMaterialsBySupplier(order.supplier.idSupplier);
+                    }
                 }
+                this.isLoading = false;
             },
             error: (error) => {
                 console.error('Error loading order', error);
@@ -167,63 +171,116 @@ export class SupplyOrderFormComponent implements OnInit {
         const supplierId = this.orderForm.get('supplierId')?.value;
         if (!supplierId || !this.allMaterials.length) return true;
         return this.allMaterials.some(material =>
-            material.suppliers?.some(s => s.id == supplierId)
+            material.suppliers?.some(s => (s.idSupplier || s.id) == supplierId)
         );
     }
 
     onSubmit(): void {
-        console.log('Supply Order Form Value:', this.orderForm.value);
+        console.log('--- Supply Order Submission Attempt ---');
+        console.log('Form Value:', this.orderForm.value);
+        console.log('Form Status:', this.orderForm.status);
+
         if (this.orderForm.invalid) {
             this.orderForm.markAllAsTouched();
-            const invalidFields = [];
-            for (const name in this.orderForm.controls) {
-                if (this.orderForm.controls[name].invalid) {
-                    invalidFields.push(name);
-                }
+            const errors: string[] = [];
+
+            if (this.orderForm.get('supplierId')?.invalid) errors.push('Partner Supplier');
+            if (this.orderForm.get('orderDate')?.invalid) errors.push('Order Date');
+            if (this.orderForm.get('status')?.invalid) errors.push('Fulfillment Status');
+
+            const materialIds = this.orderForm.get('materialIds')?.value;
+            if (!materialIds || materialIds.length === 0) {
+                errors.push('At least one material');
             }
-            this.notificationService.error(`Form is invalid. Check: ${invalidFields.join(', ')}`);
+
+            this.notificationService.error(`Form incomplete. Please check: ${errors.join(', ')}`);
+            console.warn('Form validation failed:', errors);
+            return;
+        }
+
+        const formValue = this.orderForm.value;
+        if (!formValue.materialIds || formValue.materialIds.length === 0) {
+            this.notificationService.warning('Please select at least one material for this order.');
             return;
         }
 
         this.isLoading = true;
-        const formValue = this.orderForm.value;
 
         // Construct objects from IDs
-        const selectedSupplier = this.suppliers.find(s => s.id == formValue.supplierId);
-        const selectedMaterials = this.allMaterials.filter(m => formValue.materialIds.includes(m.id));
+        const selectedSupplier = this.suppliers.find(s => (s.idSupplier || s.id) == formValue.supplierId);
+        const selectedMaterials = this.allMaterials.filter(m => formValue.materialIds.includes(m.idMaterial || m.id));
+
+        console.log('Selected Supplier:', selectedSupplier);
+        console.log('Selected Materials Count:', selectedMaterials.length);
 
         if (!selectedSupplier) {
+            this.isLoading = false;
+            this.notificationService.error('Selected supplier not found in local data. Please refresh and try again.');
+            return;
+        }
+
+        const orderData: any = {
+            idOrder: this.isEditMode && this.orderId ? this.orderId : undefined,
+            supplierId: formValue.supplierId,
+            orderLines: selectedMaterials.map(m => {
+                const matId = m.idMaterial || m.id;
+                if (!matId) {
+                    console.error('Missing ID for material:', m);
+                }
+                return {
+                    idLine: matId, // Mapping material ID to idLine as verified by USER's Postman example
+                    quantity: 1,
+                    unitPrice: 0
+                };
+            }),
+            orderDate: formValue.orderDate,
+            status: formValue.status,
+            orderNumber: `ORD-${Date.now().toString().slice(-6)}`
+        };
+
+        // Final sanity check before sending
+        if (!orderData.supplierId) {
+            console.error('MISSING SUPPLIER ID', orderData);
+            this.notificationService.error('Critical Error: Supplier ID is missing.');
             this.isLoading = false;
             return;
         }
 
-        const orderData: SupplyOrder = {
-            id: this.isEditMode && this.orderId ? this.orderId : undefined,
-            supplier: selectedSupplier,
-            materials: selectedMaterials,
-            orderDate: formValue.orderDate,
-            status: formValue.status
-        };
+        if (orderData.orderLines.some((l: any) => !l.idLine)) {
+            console.error('MISSING MATERIAL ID (idLine) IN LINES', orderData);
+            this.notificationService.error('Critical Error: One or more material IDs are missing.');
+            this.isLoading = false;
+            return;
+        }
+
+        console.log('Final DTO Payload to send:', orderData);
+        console.log('Sample Material ID:', selectedMaterials[0]?.idMaterial);
 
         if (this.isEditMode && this.orderId) {
             this.supplyOrderService.updateSupplyOrder(this.orderId, orderData).subscribe({
-                next: () => {
+                next: (res) => {
+                    console.log('Update Success:', res);
+                    this.notificationService.success('Supply Order updated successfully');
                     this.isLoading = false;
                     this.router.navigate(['/procurement/supply-orders']);
                 },
                 error: (error) => {
-                    console.error('Error updating order', error);
+                    console.error('API Error (Update):', error);
+                    this.notificationService.error('Failed to update order: ' + (error.error?.message || 'Server error'));
                     this.isLoading = false;
                 }
             });
         } else {
             this.supplyOrderService.createSupplyOrder(orderData).subscribe({
-                next: () => {
+                next: (res) => {
+                    console.log('Create Success:', res);
+                    this.notificationService.success('Supply Order created successfully');
                     this.isLoading = false;
                     this.router.navigate(['/procurement/supply-orders']);
                 },
                 error: (error) => {
-                    console.error('Error creating order', error);
+                    console.error('API Error (Create):', error);
+                    this.notificationService.error('Failed to create order: ' + (error.error?.message || 'Server error'));
                     this.isLoading = false;
                 }
             });

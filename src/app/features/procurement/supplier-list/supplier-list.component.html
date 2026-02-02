@@ -46,11 +46,13 @@
                     <td>{{ supplier.leadTime }}</td>
                     <td>
                         <div class="action-buttons">
-                            <button class="btn-icon edit" [routerLink]="['/procurement/suppliers/edit', supplier.id!]"
+                            <button class="btn-icon edit"
+                                [routerLink]="['/procurement/suppliers/edit', supplier.idSupplier || supplier.id!]"
                                 title="Edit">
                                 <i class="fas fa-edit"></i>
                             </button>
-                            <button class="btn-icon delete" (click)="deleteSupplier(supplier.id!)" title="Delete">
+                            <button class="btn-icon delete" (click)="deleteSupplier(supplier.idSupplier!)"
+                                title="Delete">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>

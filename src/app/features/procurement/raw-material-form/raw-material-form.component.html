@@ -87,8 +87,8 @@
                 <p class="field-hint">Select the suppliers that are authorized to provide this material.</p>
                 <div class="suppliers-grid">
                     <div *ngFor="let supplier of availableSuppliers" class="supplier-card"
-                        [class.selected]="isSupplierSelected(supplier.id!)"
-                        (click)="onToggleSupplier(supplier.id!, {target: {checked: !isSupplierSelected(supplier.id!)}})">
+                        [class.selected]="isSupplierSelected((supplier.idSupplier || supplier.id)!)"
+                        (click)="onToggleSupplier((supplier.idSupplier || supplier.id)!, {target: {checked: !isSupplierSelected((supplier.idSupplier || supplier.id)!)}})">
                         <div class="supplier-card-icon">
                             <i class="fas fa-building"></i>
                         </div>
@@ -97,8 +97,9 @@
                             <span class="supplier-contact">{{ supplier.contact }}</span>
                         </div>
                         <div class="supplier-card-checkbox">
-                            <i class="fas" [class.fa-check-circle]="isSupplierSelected(supplier.id!)"
-                                [class.fa-circle]="!isSupplierSelected(supplier.id!)"></i>
+                            <i class="fas"
+                                [class.fa-check-circle]="isSupplierSelected((supplier.idSupplier || supplier.id)!)"
+                                [class.fa-circle]="!isSupplierSelected((supplier.idSupplier || supplier.id)!)"></i>
                         </div>
                     </div>
                 </div>

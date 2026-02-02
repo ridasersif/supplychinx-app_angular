@@ -2,6 +2,7 @@ import { Supplier } from './supplier';
 
 export interface RawMaterial {
     id?: number;
+    idMaterial?: number;
     name: string;
     description?: string;
     stock: number;

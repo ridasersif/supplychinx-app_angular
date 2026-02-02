@@ -75,7 +75,7 @@ export class RawMaterialFormComponent implements OnInit {
                     stock: material.stock,
                     stockMin: material.stockMin,
                     unit: material.unit,
-                    supplierIds: material.suppliers?.map(s => s.id) || []
+                    supplierIds: material.suppliers?.map(s => s.idSupplier) || []
                 });
                 this.isLoading = false;
             },
@@ -122,7 +122,7 @@ export class RawMaterialFormComponent implements OnInit {
 
         const materialData: RawMaterial = {
             ...formValue,
-            id: this.isEditMode && this.materialId ? this.materialId : undefined
+            idMaterial: this.isEditMode && this.materialId ? this.materialId : undefined
         };
 
         if (this.isEditMode && this.materialId) {

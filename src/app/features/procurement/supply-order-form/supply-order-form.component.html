@@ -28,7 +28,7 @@
                         <i class="fas fa-building"></i>
                         <select id="supplier" formControlName="supplierId" class="form-control">
                             <option [ngValue]="null">Select a supplier</option>
-                            <option *ngFor="let supplier of suppliers" [ngValue]="supplier.id">
+                            <option *ngFor="let supplier of suppliers" [ngValue]="supplier.idSupplier || supplier.id">
                                 {{ supplier.name }}
                             </option>
                         </select>
@@ -71,14 +71,32 @@
                 <label for="materials">Select Raw Materials <span class="required">*</span></label>
                 <p class="field-hint">Hold Ctrl (or Cmd) to select multiple materials for this order.</p>
 
-                <div class="input-wrapper">
-                    <i class="fas fa-boxes"></i>
-                    <select id="materials" multiple formControlName="materialIds"
-                        class="form-control multi-select-premium" [class.disabled]="filteredMaterials.length === 0">
-                        <option *ngFor="let material of filteredMaterials" [ngValue]="material.id">
-                            {{ material.name }} | Stock: {{ material.stock }} {{ material.unit }}
-                        </option>
-                    </select>
+                <div class="materials-grid animate-fade">
+                    <div *ngFor="let material of filteredMaterials" class="material-card-order"
+                        [class.selected]="isMaterialSelected((material.idMaterial || material.id)!)"
+                        (click)="onToggleMaterial((material.idMaterial || material.id)!)">
+                        <div class="material-card-icon">
+                            <i class="fas fa-cubes"></i>
+                        </div>
+                        <div class="material-card-info">
+                            <span class="material-name">{{ material.name }}</span>
+                            <div class="material-stock-meta">
+                                <span class="stock-label">Stock:</span>
+                                <span class="stock-value">{{ material.stock }} {{ material.unit }}</span>
+                            </div>
+                        </div>
+                        <div class="material-card-checkbox">
+                            <i class="fas"
+                                [class.fa-check-circle]="isMaterialSelected((material.idMaterial || material.id)!)"
+                                [class.fa-circle]="!isMaterialSelected((material.idMaterial || material.id)!)">
+                            </i>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="filteredMaterials.length === 0 && !isLoading" class="empty-state-mini">
+                    <i class="fas fa-box-open"></i>
+                    <p>No materials available for selection.</p>
                 </div>
 
                 <!-- Dynamic Feedback -->
@@ -90,7 +108,7 @@
                 </div>
 
                 <div class="error-message"
-                    *ngIf="orderForm.get('materialIds')?.invalid && orderForm.get('materialIds')?.touched">
+                    *ngIf="orderForm.get('materialIds')?.value?.length === 0 && orderForm.get('materialIds')?.touched">
                     <i class="fas fa-exclamation-triangle"></i> At least one material must be selected for the order.
                 </div>
             </div>

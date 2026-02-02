@@ -101,8 +101,8 @@
                 </p>
                 <div class="materials-grid">
                     <div *ngFor="let material of availableMaterials" class="material-card"
-                        [class.selected]="isMaterialSelected(material.id!)"
-                        (click)="onToggleMaterial(material.id!, {target: {checked: !isMaterialSelected(material.id!)}})">
+                        [class.selected]="isMaterialSelected((material.idMaterial || material.id)!)"
+                        (click)="onToggleMaterial((material.idMaterial || material.id)!, {target: {checked: !isMaterialSelected((material.idMaterial || material.id)!)}})">
                         <div class="material-card-icon">
                             <i class="fas fa-cube"></i>
                         </div>
@@ -111,8 +111,9 @@
                             <span class="material-unit">Unit: {{ material.unit }}</span>
                         </div>
                         <div class="material-card-checkbox">
-                            <i class="fas" [class.fa-check-circle]="isMaterialSelected(material.id!)"
-                                [class.fa-circle]="!isMaterialSelected(material.id!)"></i>
+                            <i class="fas"
+                                [class.fa-check-circle]="isMaterialSelected((material.idMaterial || material.id)!)"
+                                [class.fa-circle]="!isMaterialSelected((material.idMaterial || material.id)!)"></i>
                         </div>
                     </div>
                 </div>
