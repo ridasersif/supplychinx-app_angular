@@ -1,0 +1,75 @@
+<div class="dashboard-layout">
+    <!-- Sidebar -->
+    <aside class="sidebar glass-card">
+        <div class="sidebar-header">
+            <i class="fas fa-boxes-stacked logo-icon"></i>
+            <span>SupplyChainX</span>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-group-header">General</div>
+            <a routerLink="/dashboard" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                class="nav-item">
+                <i class="fas fa-chart-line"></i>
+                <span>Dashboard</span>
+            </a>
+            <a routerLink="/dashboard/customers" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-users"></i>
+                <span>Customers</span>
+            </a>
+
+            <div class="nav-group-header">Procurement</div>
+            <a routerLink="/dashboard/procurement/suppliers" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-building"></i>
+                <span>Suppliers</span>
+            </a>
+            <a routerLink="/dashboard/procurement/raw-materials" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-cubes"></i>
+                <span>Raw Materials</span>
+            </a>
+            <a routerLink="/dashboard/procurement/supply-orders" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-clipboard-list"></i>
+                <span>Supply Orders</span>
+            </a>
+            <a routerLink="/dashboard/settings" routerLinkActive="active" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="user-info" *ngIf="authService.currentUser$ | async as user">
+                <div class="user-avatar">{{ user.sub.charAt(0).toUpperCase() }}</div>
+                <div class="user-details">
+                    <span class="user-name">{{ user.sub.split('@')[0] }}</span>
+                    <span class="user-role">{{ user.roles[0] || 'User' }}</span>
+                </div>
+            </div>
+            <button class="btn-logout" (click)="logout()">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <header class="topbar glass-card">
+            <div class="page-title">
+                <h3>Overview</h3>
+            </div>
+            <div class="topbar-actions">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <button class="icon-btn"><i class="fas fa-bell"></i></button>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content animate-fade">
+            <router-outlet></router-outlet>
+        </div>
+    </main>
+</div>

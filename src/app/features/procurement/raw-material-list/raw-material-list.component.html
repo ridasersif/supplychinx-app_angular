@@ -3,7 +3,7 @@
         <h1>Raw Material Management</h1>
         <p>Manage raw materials and check inventory levels</p>
     </div>
-    <button class="btn btn-primary" routerLink="/procurement/raw-materials/new">
+    <button class="btn btn-primary" routerLink="/dashboard/procurement/raw-materials/new">
         <i class="fas fa-plus"></i>
         <span>Add New Material</span>
     </button>
@@ -54,7 +54,7 @@
                                 <i class="fas fa-info-circle"></i>
                             </button>
                             <button class="btn-icon edit"
-                                [routerLink]="['/procurement/raw-materials/edit', material.idMaterial || material.id!]"
+                                [routerLink]="['/dashboard/procurement/raw-materials/edit', material.idMaterial || material.id!]"
                                 title="Edit">
                                 <i class="fas fa-edit"></i>
                             </button>
@@ -111,7 +111,7 @@
     <div footer>
         <button class="btn btn-secondary" (click)="closeModals()">Close</button>
         <button class="btn btn-primary"
-            [routerLink]="['/procurement/raw-materials/edit', selectedMaterial?.idMaterial || selectedMaterial?.id]">
+            [routerLink]="['/dashboard/procurement/raw-materials/edit', selectedMaterial?.idMaterial || selectedMaterial?.id]">
             Edit Material
         </button>
     </div>

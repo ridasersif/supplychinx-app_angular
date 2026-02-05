@@ -10,7 +10,10 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
         catchError((error) => {
             if ([401, 403].includes(error.status)) {
                 // auto logout if 401 or 403 response returned from api
-                authService.logout();
+                // But NOT for login requests, otherwise we might loop or clear current login attempt
+                if (!req.url.includes('/login')) {
+                    authService.logout();
+                }
             }
 
             // Pass the original error through so components can access status, error body, etc.

@@ -3,7 +3,7 @@
         <h1>Supplier Management</h1>
         <p>Manage your suppliers and their information</p>
     </div>
-    <button class="btn btn-primary" routerLink="/procurement/suppliers/new">
+    <button class="btn btn-primary" routerLink="/dashboard/procurement/suppliers/new">
         <i class="fas fa-plus"></i>
         <span>Add New Supplier</span>
     </button>
@@ -47,7 +47,7 @@
                     <td>
                         <div class="action-buttons">
                             <button class="btn-icon edit"
-                                [routerLink]="['/procurement/suppliers/edit', supplier.idSupplier || supplier.id!]"
+                                [routerLink]="['/dashboard/procurement/suppliers/edit', supplier.idSupplier || supplier.id!]"
                                 title="Edit">
                                 <i class="fas fa-edit"></i>
                             </button>

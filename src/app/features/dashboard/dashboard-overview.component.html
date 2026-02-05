@@ -1,0 +1,42 @@
+<div class="dashboard-header animate-fade" *ngIf="authService.currentUser$ | async as user">
+    <h1>Welcome back, {{ user.sub.split('@')[0] }}!</h1>
+    <p>Here's what's happening with your supply chain today.</p>
+</div>
+
+<div class="dashboard-stats animate-fade">
+    <div class="glass-card stat-card">
+        <i class="fas fa-users icon-primary"></i>
+        <h3>Active Customers</h3>
+        <p class="stat-value">1,284</p>
+    </div>
+    <div class="glass-card stat-card">
+        <i class="fas fa-truck icon-accent"></i>
+        <h3>Shipments</h3>
+        <p class="stat-value">42 Pending</p>
+    </div>
+    <div class="glass-card stat-card">
+        <i class="fas fa-box icon-success"></i>
+        <h3>Inventory</h3>
+        <p class="stat-value">85% Capacity</p>
+    </div>
+</div>
+
+<!-- Procurement Navigation -->
+<h2 class="section-title">Procurement Module</h2>
+<div class="procurement-nav animate-fade">
+    <div class="glass-card nav-card" routerLink="/dashboard/procurement/suppliers">
+        <i class="fas fa-building icon-proc-1"></i>
+        <h3>Suppliers</h3>
+        <p>Manage Suppliers</p>
+    </div>
+    <div class="glass-card nav-card" routerLink="/dashboard/procurement/raw-materials">
+        <i class="fas fa-cubes icon-proc-2"></i>
+        <h3>Raw Materials</h3>
+        <p>Manage Inventory</p>
+    </div>
+    <div class="glass-card nav-card" routerLink="/dashboard/procurement/supply-orders">
+        <i class="fas fa-clipboard-list icon-proc-3"></i>
+        <h3>Supply Orders</h3>
+        <p>Create & Track Orders</p>
+    </div>
+</div>

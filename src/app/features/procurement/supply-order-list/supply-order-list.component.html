@@ -3,7 +3,7 @@
         <h1>Procurement Orders</h1>
         <p>Monitor and manage raw material orders across all suppliers</p>
     </div>
-    <button class="btn btn-primary" routerLink="/procurement/supply-orders/new">
+    <button class="btn btn-primary" routerLink="/dashboard/procurement/supply-orders/new">
         <i class="fas fa-plus"></i>
         <span>Place New Order</span>
     </button>
@@ -66,7 +66,7 @@
                     <td>
                         <div class="action-buttons">
                             <button class="btn-icon edit"
-                                [routerLink]="['/procurement/supply-orders/edit', order.idOrder || order.id!]"
+                                [routerLink]="['/dashboard/procurement/supply-orders/edit', order.idOrder || order.id!]"
                                 title="Edit Order">
                                 <i class="fas fa-edit"></i>
                             </button>

@@ -3,7 +3,7 @@
         <h1>Customer Management</h1>
         <p>Manage your clients and their information</p>
     </div>
-    <button class="btn btn-primary" routerLink="/customers/new">
+    <button class="btn btn-primary" routerLink="/dashboard/customers/new">
         <i class="fas fa-plus"></i>
         <span>Add New Customer</span>
     </button>
@@ -42,11 +42,11 @@
                     <td>{{ customer.address }}</td>
                     <td class="text-right">
                         <div class="action-buttons">
-                            <button class="btn-icon" [routerLink]="['/customers', customer.idCustomer]">
+                            <button class="btn-icon" [routerLink]="['/dashboard/customers', customer.idCustomer]">
                                 <i class="fas fa-eye"></i>
                             </button>
                             <button class="btn-icon btn-icon-edit"
-                                [routerLink]="['/customers/edit', customer.idCustomer]">
+                                [routerLink]="['/dashboard/customers/edit', customer.idCustomer]">
                                 <i class="fas fa-edit"></i>
                             </button>
                             <button class="btn-icon btn-icon-delete" (click)="deleteCustomer(customer.idCustomer!)">

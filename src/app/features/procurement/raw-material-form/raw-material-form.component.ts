@@ -130,7 +130,7 @@ export class RawMaterialFormComponent implements OnInit {
                 next: () => {
                     this.isLoading = false;
                     this.notificationService.success('Raw material updated successfully');
-                    this.router.navigate(['/procurement/raw-materials']);
+                    this.router.navigate(['/dashboard/procurement/raw-materials']);
                 },
                 error: (error) => {
                     console.error('Error updating material', error);
@@ -143,7 +143,7 @@ export class RawMaterialFormComponent implements OnInit {
                 next: () => {
                     this.isLoading = false;
                     this.notificationService.success('Raw material created successfully');
-                    this.router.navigate(['/procurement/raw-materials']);
+                    this.router.navigate(['/dashboard/procurement/raw-materials']);
                 },
                 error: (error) => {
                     console.error('Error creating material', error);

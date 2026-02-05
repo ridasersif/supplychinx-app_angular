@@ -62,7 +62,7 @@ export class CustomerFormComponent implements OnInit {
         observation.subscribe({
             next: () => {
                 this.isLoading = false;
-                this.router.navigate(['/customers']);
+                this.router.navigate(['/dashboard/customers']);
             },
             error: (err) => {
                 this.isLoading = false;

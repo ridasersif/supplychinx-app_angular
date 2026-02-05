@@ -262,7 +262,7 @@ export class SupplyOrderFormComponent implements OnInit {
                     console.log('Update Success:', res);
                     this.notificationService.success('Supply Order updated successfully');
                     this.isLoading = false;
-                    this.router.navigate(['/procurement/supply-orders']);
+                    this.router.navigate(['/dashboard/procurement/supply-orders']);
                 },
                 error: (error) => {
                     console.error('API Error (Update):', error);
@@ -276,7 +276,7 @@ export class SupplyOrderFormComponent implements OnInit {
                     console.log('Create Success:', res);
                     this.notificationService.success('Supply Order created successfully');
                     this.isLoading = false;
-                    this.router.navigate(['/procurement/supply-orders']);
+                    this.router.navigate(['/dashboard/procurement/supply-orders']);
                 },
                 error: (error) => {
                     console.error('API Error (Create):', error);

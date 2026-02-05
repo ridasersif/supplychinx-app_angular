@@ -146,7 +146,7 @@ export class SupplierFormComponent implements OnInit {
                 next: () => {
                     this.isLoading = false;
                     this.notificationService.success('Supplier updated successfully');
-                    this.router.navigate(['/procurement/suppliers']);
+                    this.router.navigate(['/dashboard/procurement/suppliers']);
                 },
                 error: (error) => {
                     console.error('Error updating supplier', error);
@@ -159,7 +159,7 @@ export class SupplierFormComponent implements OnInit {
                 next: () => {
                     this.isLoading = false;
                     this.notificationService.success('Supplier created successfully');
-                    this.router.navigate(['/procurement/suppliers']);
+                    this.router.navigate(['/dashboard/procurement/suppliers']);
                 },
                 error: (error) => {
                     console.error('Error creating supplier', error);

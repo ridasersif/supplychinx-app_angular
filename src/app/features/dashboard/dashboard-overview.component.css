@@ -1,0 +1,89 @@
+/* Dashboard Header */
+.dashboard-header h1 {
+    margin-bottom: 5px;
+}
+
+.dashboard-header p {
+    color: var(--text-secondary);
+}
+
+/* Dashboard Stats */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.stat-card {
+    padding: 20px;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.icon-primary {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.icon-accent {
+    font-size: 2rem;
+    color: var(--accent-color);
+    margin-bottom: 10px;
+}
+
+.icon-success {
+    font-size: 2rem;
+    color: var(--success-color);
+    margin-bottom: 10px;
+}
+
+/* Procurement Navigation */
+.section-title {
+    margin-top: 40px;
+    margin-bottom: 20px;
+}
+
+.procurement-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.nav-card {
+    padding: 20px;
+    cursor: pointer;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.nav-card:hover {
+    transform: translateY(-5px);
+}
+
+.icon-proc-1 {
+    font-size: 2rem;
+    color: #4361ee;
+    margin-bottom: 10px;
+}
+
+.icon-proc-2 {
+    font-size: 2rem;
+    color: #f72585;
+    margin-bottom: 10px;
+}
+
+.icon-proc-3 {
+    font-size: 2rem;
+    color: #4cc9f0;
+    margin-bottom: 10px;
+}

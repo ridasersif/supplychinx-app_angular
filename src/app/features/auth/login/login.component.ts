@@ -24,28 +24,40 @@ export class LoginComponent {
     }
 
     onSubmit(): void {
+        console.log('LoginComponent: onSubmit called');
+        console.log('LoginComponent: Form valid:', this.loginForm.valid);
+
         if (this.loginForm.invalid) {
+            console.warn('LoginComponent: Form is invalid', this.loginForm.errors);
+            // Mark all as touched to show validation errors
+            this.loginForm.markAllAsTouched();
             return;
         }
-        console.log(this.loginForm.value);
 
         this.isLoading = true;
         this.errorMessage = '';
 
         const { email, password } = this.loginForm.value;
+        console.log('LoginComponent: Starting login request for:', email);
 
         this.authService.login({ email, password }).subscribe({
-            next: () => {
+            next: (response) => {
+                console.log('LoginComponent: Login successful, navigating to dashboard...');
                 this.isLoading = false;
                 this.router.navigate(['/dashboard']);
             },
             error: (err) => {
+                console.error('LoginComponent: Login error:', err);
                 this.isLoading = false;
-                console.error('Login error', err);
-                if (err.status === 401) {
+
+                if (err.name === 'TimeoutError') {
+                    this.errorMessage = 'Le serveur ne répond pas (Timeout). Vérifiez si le backend est lancé.';
+                } else if (err.status === 401) {
                     this.errorMessage = 'Email ou mot de passe incorrect.';
+                } else if (err.status === 0) {
+                    this.errorMessage = 'Impossible de contacter le serveur. Vérifiez votre connexion ou si le backend est actif.';
                 } else {
-                    this.errorMessage = 'Une erreur est survenue. Veuillez réessayer.';
+                    this.errorMessage = err.error?.message || 'Une erreur est survenue. Veuillez réessayer.';
                 }
             }
         });

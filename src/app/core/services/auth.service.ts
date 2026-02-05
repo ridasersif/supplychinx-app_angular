@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap, of } from 'rxjs';
+import { BehaviorSubject, Observable, tap, of, throwError, timeout, catchError } from 'rxjs';
 import { Router } from '@angular/router';
 import { AuthRequest, RegisterRequest, AuthResponse, User, Role } from '../models/auth.models';
 import { TokenService } from './token.service';
@@ -24,11 +24,39 @@ export class AuthService {
         this.loadUserFromToken();
     }
 
-    login(authRequest: AuthRequest): Observable<AuthResponse> {
-        return this.http.post<AuthResponse>(`${this.API_URL}/login`, authRequest).pipe(
-            tap(response => {
-                this.tokenService.saveTokens(response.accessToken, response.refreshToken);
-                this.loadUserFromToken();
+    login(authRequest: AuthRequest): Observable<any> {
+        console.log('AuthService: Attempting login to:', `${this.API_URL}/login`);
+        console.log('AuthService: Payload:', { ...authRequest, password: '***' });
+
+        return this.http.post<any>(`${this.API_URL}/login`, authRequest).pipe(
+            timeout(15000), // 15 seconds timeout
+            tap({
+                next: (response) => {
+                    console.log('AuthService: Login response received:', response);
+
+                    // Handle wrapped response if present
+                    const data = response.data || response;
+                    const accessToken = data.accessToken || data.access_token || data.token;
+                    const refreshToken = data.refreshToken || data.refresh_token;
+
+                    if (accessToken) {
+                        console.log('AuthService: Access token found, saving...');
+                        this.tokenService.saveTokens(accessToken, refreshToken || '');
+                        this.loadUserFromToken();
+                    } else {
+                        console.warn('AuthService: No access token found in response!', response);
+                    }
+                },
+                error: (error) => {
+                    console.error('AuthService: Login error:', error);
+                    if (error.name === 'TimeoutError') {
+                        console.error('AuthService: Request timed out after 15s');
+                    }
+                }
+            }),
+            catchError(err => {
+                // Return the error so the component can handle it
+                return throwError(() => err);
             })
         );
     }
@@ -96,9 +124,11 @@ export class AuthService {
 
     private loadUserFromToken(): void {
         const token = this.tokenService.getAccessToken();
+        console.log('AuthService: Loading user from token, token exists:', !!token);
         if (token) {
             try {
                 const decoded: any = jwtDecode(token);
+                console.log('AuthService: Decoded token:', decoded);
                 let roles = decoded.roles || decoded.authorities || decoded.role || [];
                 if (!Array.isArray(roles)) {
                     roles = [roles];
@@ -109,9 +139,10 @@ export class AuthService {
                     roles: roles,
                     exp: decoded.exp
                 };
+                console.log('AuthService: User object created:', user);
                 this.currentUserSubject.next(user);
             } catch (e) {
-                console.error('Invalid token', e);
+                console.error('AuthService: Invalid token decoding failed', e);
                 this.tokenService.clearTokens();
             }
         }
