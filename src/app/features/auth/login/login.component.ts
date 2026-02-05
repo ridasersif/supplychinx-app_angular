@@ -16,11 +16,7 @@ export class LoginComponent {
     isLoading = false;
     errorMessage = '';
 
-    constructor(
-        private fb: FormBuilder,
-        private authService: AuthService,
-        private router: Router
-    ) {
+    constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             password: ['', [Validators.required, Validators.minLength(6)]]
@@ -31,6 +27,7 @@ export class LoginComponent {
         if (this.loginForm.invalid) {
             return;
         }
+        console.log(this.loginForm.value);
 
         this.isLoading = true;
         this.errorMessage = '';

@@ -44,8 +44,9 @@ export class SupplyOrderListComponent implements OnInit {
                     data = (response as any).data.content;
                 } else if (response && Array.isArray((response as any).content)) {
                     data = (response as any).content;
-                } else {
-                    console.warn('Unknown response structure', response);
+                } else if (response && typeof response === 'object') {
+                    // Fallback: check if it's a single object that might be part of a list
+                    data = [response];
                 }
 
                 this.orders = data || [];
