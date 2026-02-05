@@ -24,6 +24,10 @@ export const routes: Routes = [
                 loadChildren: () => import('./features/procurement/procurement.routes').then(m => m.PROCUREMENT_ROUTES)
             },
             {
+                path: 'production',
+                loadChildren: () => import('./features/production/production.routes').then(m => m.PRODUCTION_ROUTES)
+            },
+            {
                 path: 'customers',
                 loadChildren: () => import('./features/customers/customers-routing.module').then(m => m.CustomersRoutingModule)
             },

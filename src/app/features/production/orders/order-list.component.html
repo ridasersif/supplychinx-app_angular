@@ -1,0 +1,85 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Production Orders</h1>
+        <p>Track and manage the progress of your manufacturing orders</p>
+    </div>
+    <button class="btn btn-primary" routerLink="/dashboard/production/orders/new">
+        <i class="fas fa-industry"></i>
+        <span>Launch New Order</span>
+    </button>
+</div>
+
+<div class="list-container glass-card animate-fade">
+    <div class="list-actions">
+        <div class="filter-group">
+            <label>Filter by Status:</label>
+            <select [(ngModel)]="statusFilter" (change)="onStatusFilterChange()" class="status-select">
+                <option value="">All Statuses</option>
+                <option value="EN_ATTENTE">En Attente</option>
+                <option value="EN_PRODUCTION">En Production</option>
+                <option value="TERMINE">Terminé</option>
+                <option value="BLOQUE">Bloqué</option>
+                <option value="ANNULE">Annulé</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="premium-table-container">
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Product</th>
+                    <th>Quantity</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>End Date</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders" class="table-row">
+                    <td class="order-number">#{{ order.orderNumber || order.idOrder }}</td>
+                    <td>{{ order.productName }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>
+                        <span class="priority-badge" [ngClass]="getPriorityBadgeClass(order.priority!)">
+                            {{ order.priority }}
+                        </span>
+                    </td>
+                    <td>
+                        <span class="badge" [ngClass]="getStatusBadgeClass(order.status!)">
+                            {{ (order.status || '').split('_').join(' ') }}
+                        </span>
+                    </td>
+                    <td>{{ order.endDate | date:'mediumDate' }}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button *ngIf="order.status === 'EN_ATTENTE'" class="btn-icon delete"
+                                (click)="cancelOrder(order.idOrder!)" title="Cancel Order">
+                                <i class="fas fa-ban"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="orders.length === 0 && !isLoading">
+                    <td colspan="7" class="text-center no-data">
+                        <i class="fas fa-tasks"></i>
+                        <p>No production orders found</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalElements > pageSize">
+        <button [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)" class="btn-pagination">
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <span class="page-info">Page {{ currentPage + 1 }}</span>
+        <button [disabled]="(currentPage + 1) * pageSize >= totalElements" (click)="onPageChange(currentPage + 1)"
+            class="btn-pagination">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>

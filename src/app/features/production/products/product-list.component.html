@@ -1,0 +1,75 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Product Management</h1>
+        <p>Manage your finished products and their Bill of Materials</p>
+    </div>
+    <button class="btn btn-primary" routerLink="/dashboard/production/products/new">
+        <i class="fas fa-plus"></i>
+        <span>Add New Product</span>
+    </button>
+</div>
+
+<div class="list-container glass-card animate-fade">
+    <div class="premium-table-container">
+        <table class="premium-table">
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Production Time</th>
+                    <th>Cost</th>
+                    <th>Stock</th>
+                    <th class="text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let product of products" class="table-row">
+                    <td>
+                        <div class="product-info">
+                            <div class="avatar-sm">{{ product.name.charAt(0).toUpperCase() }}</div>
+                            <div class="info-content">
+                                <span class="product-name">{{ product.name }}</span>
+                                <small class="text-muted">{{ product.unit }}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>{{ product.productionTime }}h</td>
+                    <td>{{ product.cost | currency:'MAD':'symbol':'1.2-2' }}</td>
+                    <td>
+                        <span class="badge"
+                            [ngClass]="(product.stock || 0) <= (product.minimumStock || 0) ? 'badge-danger' : 'badge-success'">
+                            {{ product.stock || 0 }}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-icon edit"
+                                [routerLink]="['/dashboard/production/products/edit', product.idProduct]" title="Edit">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn-icon delete" (click)="deleteProduct(product.idProduct!)" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+                <tr *ngIf="products.length === 0 && !isLoading">
+                    <td colspan="5" class="text-center no-data">
+                        <i class="fas fa-box-open"></i>
+                        <p>No products found</p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalElements > pageSize">
+        <button [disabled]="currentPage === 0" (click)="onPageChange(currentPage - 1)" class="btn-pagination">
+            <i class="fas fa-chevron-left"></i> Previous
+        </button>
+        <span class="page-info">Page {{ currentPage + 1 }} of {{ Math.ceil(totalElements / pageSize) }}</span>
+        <button [disabled]="(currentPage + 1) * pageSize >= totalElements" (click)="onPageChange(currentPage + 1)"
+            class="btn-pagination">
+            Next <i class="fas fa-chevron-right"></i>
+        </button>
+    </div>
+</div>

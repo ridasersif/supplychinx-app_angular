@@ -1,0 +1,78 @@
+<div class="page-header">
+    <div class="header-content">
+        <h1>Launch Production Order</h1>
+        <p>Start a new manufacturing process for a finished product</p>
+    </div>
+    <button class="btn btn-outline" routerLink="/dashboard/production/orders">
+        <i class="fas fa-arrow-left"></i>
+        <span>Back to List</span>
+    </button>
+</div>
+
+<div class="form-container glass-card animate-scale">
+    <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+        <div class="form-section">
+            <h3 class="section-title"><i class="fas fa-industry"></i> Production Details</h3>
+
+            <div class="form-grid">
+                <div class="form-group full-width">
+                    <label>Product to Manufacture <span class="required">*</span></label>
+                    <select formControlName="productId"
+                        [ngClass]="{'is-invalid': orderForm.get('productId')?.touched && orderForm.get('productId')?.invalid}">
+                        <option [ngValue]="null">Select a product...</option>
+                        <option *ngFor="let p of products" [ngValue]="p.idProduct">
+                            {{ p.name }} (Stock: {{ p.stock || 0 }})
+                        </option>
+                    </select>
+                    <div class="error-msg"
+                        *ngIf="orderForm.get('productId')?.touched && orderForm.get('productId')?.invalid">
+                        Please select a product
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Target Quantity <span class="required">*</span></label>
+                    <input type="number" formControlName="quantity" min="1" placeholder="Enter amount to produce"
+                        [ngClass]="{'is-invalid': orderForm.get('quantity')?.touched && orderForm.get('quantity')?.invalid}">
+                    <div class="error-msg"
+                        *ngIf="orderForm.get('quantity')?.touched && orderForm.get('quantity')?.invalid">
+                        Quantity must be at least 1
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Priority Level <span class="required">*</span></label>
+                    <select formControlName="priority">
+                        <option value="LOW">Low</option>
+                        <option value="MEDIUM">Medium</option>
+                        <option value="HIGH">High</option>
+                        <option value="URGENT">Urgent</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Desired Start Date <span class="required">*</span></label>
+                    <input type="date" formControlName="startDate"
+                        [ngClass]="{'is-invalid': orderForm.get('startDate')?.touched && orderForm.get('startDate')?.invalid}">
+                </div>
+            </div>
+
+            <div class="info-alert animate-fade" *ngIf="orderForm.get('productId')?.value">
+                <i class="fas fa-info-circle"></i>
+                <p>Availability of raw materials will be checked automatically upon submission.</p>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="button" class="btn btn-outline" routerLink="/dashboard/production/orders"
+                [disabled]="isLoading">
+                Cancel
+            </button>
+            <button type="submit" class="btn btn-primary" [disabled]="isLoading">
+                <i class="fas fa-rocket" *ngIf="!isLoading"></i>
+                <i class="fas fa-spinner fa-spin" *ngIf="isLoading"></i>
+                {{ isLoading ? 'Processing...' : 'Launch Order' }}
+            </button>
+        </div>
+    </form>
+</div>
